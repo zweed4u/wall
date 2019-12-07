@@ -1,0 +1,1912 @@
+=================================================================================================
+LINUX PRIVILEGE ESCALATION CHECKER
+=================================================================================================
+
+[*] GETTING BASIC SYSTEM INFO...
+
+[+] Kernel
+Linux version 4.15.0-54-generic (buildd@lgw01-amd64-014) (gcc version 7.4.0 (Ubuntu 7.4.0-1ubuntu1~18.04.1)) #58-Ubuntu SMP Mon Jun 24 10:55:24 UTC 2019
+
+[+] Hostname
+Wall
+
+[+] Operating System
+Ubuntu 18.04.2 LTS \n \l
+
+[*] GETTING NETWORKING INFO...
+
+[+] Interfaces
+ens33: flags=4163 mtu 1500
+inet 10.10.10.157 netmask 255.255.255.0 broadcast 10.10.10.255
+inet6 fe80::250:56ff:feb9:5ecb prefixlen 64 scopeid 0x20
+inet6 dead:beef::250:56ff:feb9:5ecb prefixlen 64 scopeid 0x0
+ether 00:50:56:b9:5e:cb txqueuelen 1000 (Ethernet)
+RX packets 2192938 bytes 240031055 (240.0 MB)
+RX errors 275 dropped 1152 overruns 0 frame 0
+TX packets 1856908 bytes 471594860 (471.5 MB)
+TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
+device interrupt 19 base 0x2000
+lo: flags=73 mtu 65536
+inet 127.0.0.1 netmask 255.0.0.0
+inet6 ::1 prefixlen 128 scopeid 0x10
+loop txqueuelen 1000 (Local Loopback)
+RX packets 19246 bytes 1715468 (1.7 MB)
+RX errors 0 dropped 0 overruns 0 frame 0
+TX packets 19246 bytes 1715468 (1.7 MB)
+TX errors 0 dropped 0 overruns 0 carrier 0 collisions 0
+
+[+] Netstat
+Active Internet connections (servers and established)
+Proto Recv-Q Send-Q Local Address Foreign Address State PID/Program name
+tcp 0 0 127.0.0.1:9042 0.0.0.0:* LISTEN -
+tcp 0 0 127.0.0.53:53 0.0.0.0:* LISTEN -
+tcp 0 0 0.0.0.0:22 0.0.0.0:* LISTEN -
+tcp 0 0 127.0.0.1:3306 0.0.0.0:* LISTEN -
+tcp6 15 0 :::80 :::* LISTEN -
+tcp6 0 0 :::22 :::* LISTEN -
+tcp6 139 0 10.10.10.157:80 10.10.14.128:36450 ESTABLISHED -
+tcp6 0 1 10.10.10.157:80 10.10.14.128:36480 FIN_WAIT1 -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36536 FIN_WAIT1 -
+tcp6 0 3728 10.10.10.157:80 10.10.14.128:36550 FIN_WAIT1 -
+tcp6 89 0 10.10.10.157:80 10.10.14.128:36560 ESTABLISHED -
+tcp6 143 0 10.10.10.157:80 10.10.14.128:36434 ESTABLISHED -
+tcp6 0 1 10.10.10.157:80 10.10.14.128:36526 FIN_WAIT1 -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36390 FIN_WAIT1 -
+tcp6 0 140 10.10.10.157:80 10.10.14.140:60277 ESTABLISHED -
+tcp6 139 0 10.10.10.157:80 10.10.14.128:36442 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36524 FIN_WAIT2 -
+tcp6 143 0 10.10.10.157:80 10.10.14.128:36436 ESTABLISHED -
+tcp6 0 1 10.10.10.157:80 10.10.14.128:36378 FIN_WAIT1 -
+tcp6 139 0 10.10.10.157:80 10.10.14.128:36428 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36502 FIN_WAIT2 -
+tcp6 0 3726 10.10.10.157:80 10.10.14.128:36424 FIN_WAIT1 -
+tcp6 0 1 10.10.10.157:80 10.10.14.128:36398 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36618 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36608 SYN_RECV -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36404 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36366 FIN_WAIT2 -
+tcp6 0 0 10.10.10.157:80 10.10.16.14:35442 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36370 FIN_WAIT2 -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36446 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36602 SYN_RECV -
+tcp6 0 204 10.10.10.157:80 10.10.14.140:53923 ESTABLISHED -
+tcp6 0 3727 10.10.10.157:80 10.10.14.128:36250 FIN_WAIT1 -
+tcp6 0 3729 10.10.10.157:80 10.10.14.128:36268 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36488 FIN_WAIT2 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36576 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.16.48:53248 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36620 SYN_RECV -
+tcp6 0 587 10.10.10.157:80 10.10.14.194:34446 ESTABLISHED -
+tcp6 0 442 10.10.10.157:80 10.10.14.221:40046 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36612 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.112:60824 ESTABLISHED -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36444 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36412 FIN_WAIT2 -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36448 FIN_WAIT1 -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36570 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36616 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36656 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.6:51842 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36598 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36546 FIN_WAIT2 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36584 SYN_RECV -
+tcp6 0 3452 10.10.10.157:80 10.10.14.128:36418 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36606 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.112:60820 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.6:51840 ESTABLISHED -
+tcp6 0 2384 10.10.10.157:80 10.10.14.128:36330 FIN_WAIT1 -
+tcp6 0 140 10.10.10.157:80 10.10.14.140:34677 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36658 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36672 SYN_RECV -
+tcp6 0 140 10.10.10.157:80 10.10.14.140:37541 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36648 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36628 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36664 SYN_RECV -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36564 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36670 SYN_RECV -
+tcp6 0 1 10.10.10.157:80 10.10.14.128:36416 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36668 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36426 FIN_WAIT2 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36604 SYN_RECV -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36566 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36684 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36422 FIN_WAIT2 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36644 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36642 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36374 FIN_WAIT2 -
+tcp6 0 2380 10.10.10.157:80 10.10.14.128:36292 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.140:35267 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36414 FIN_WAIT2 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36626 SYN_RECV -
+tcp6 0 3452 10.10.10.157:80 10.10.14.128:36574 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36690 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36676 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36694 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36630 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36652 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.16.48:53250 ESTABLISHED -
+tcp6 0 204 10.10.10.157:80 10.10.14.140:46027 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36596 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36698 SYN_RECV -
+tcp6 0 2107 10.10.10.157:80 10.10.14.128:36318 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36586 SYN_RECV -
+tcp6 0 140 10.10.10.157:80 10.10.14.140:36855 ESTABLISHED -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36440 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36594 SYN_RECV -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36454 FIN_WAIT1 -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36572 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36700 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.15.49:35926 ESTABLISHED -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36568 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.112:60822 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36696 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36712 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.16.48:53246 ESTABLISHED -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36438 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36634 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36662 SYN_RECV -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36452 FIN_WAIT1 -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36432 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36588 SYN_RECV -
+tcp6 0 704 10.10.10.157:80 10.10.14.128:36562 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36682 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36578 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36704 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36692 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36710 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36556 FIN_WAIT2 -
+tcp6 0 1 10.10.10.157:80 10.10.14.128:36558 FIN_WAIT1 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36720 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36592 SYN_RECV -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36622 SYN_RECV -
+tcp6 0 140 10.10.10.157:80 10.10.14.140:59565 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36236 FIN_WAIT2 -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36624 ESTABLISHED -
+tcp6 0 0 10.10.10.157:80 10.10.14.128:36590 ESTABLISHED -
+tcp6 0 3728 10.10.10.157:80 10.10.14.128:36590 FIN_WAIT1 -
+udp 0 0 127.0.0.53:53 0.0.0.0:* -
+udp 0 0 127.0.0.1:161 0.0.0.0:* -
+udp 0 0 0.0.0.0:49352 0.0.0.0:* -
+
+[+] Route
+Kernel IP routing table
+Destination Gateway Genmask Flags Metric Ref Use Iface
+default _gateway 0.0.0.0 UG 0 0 0 ens33
+10.10.10.0 0.0.0.0 255.255.255.0 U 0 0 0 ens33
+
+[*] GETTING FILESYSTEM INFO...
+
+[+] Mount results
+/dev/sda1 on / type ext4 (rw,relatime,errors=remount-ro,data=ordered)
+udev on /dev type devtmpfs (rw,nosuid,relatime,size=986484k,nr_inodes=246621,mode=755)
+devpts on /dev/pts type devpts (rw,nosuid,noexec,relatime,gid=5,mode=620,ptmxmode=000)
+tmpfs on /dev/shm type tmpfs (rw,nosuid,nodev)
+mqueue on /dev/mqueue type mqueue (rw,relatime)
+hugetlbfs on /dev/hugepages type hugetlbfs (rw,relatime,pagesize=2M)
+tmpfs on /run type tmpfs (rw,nosuid,noexec,relatime,size=201728k,mode=755)
+tmpfs on /run/lock type tmpfs (rw,nosuid,nodev,noexec,relatime,size=5120k)
+sysfs on /sys type sysfs (rw,nosuid,nodev,noexec,relatime)
+securityfs on /sys/kernel/security type securityfs (rw,nosuid,nodev,noexec,relatime)
+tmpfs on /sys/fs/cgroup type tmpfs (ro,nosuid,nodev,noexec,mode=755)
+cgroup on /sys/fs/cgroup/unified type cgroup2 (rw,nosuid,nodev,noexec,relatime,nsdelegate)
+cgroup on /sys/fs/cgroup/systemd type cgroup (rw,nosuid,nodev,noexec,relatime,xattr,name=systemd)
+cgroup on /sys/fs/cgroup/blkio type cgroup (rw,nosuid,nodev,noexec,relatime,blkio)
+cgroup on /sys/fs/cgroup/memory type cgroup (rw,nosuid,nodev,noexec,relatime,memory)
+cgroup on /sys/fs/cgroup/net_cls,net_prio type cgroup (rw,nosuid,nodev,noexec,relatime,net_cls,net_prio)
+cgroup on /sys/fs/cgroup/freezer type cgroup (rw,nosuid,nodev,noexec,relatime,freezer)
+cgroup on /sys/fs/cgroup/cpu,cpuacct type cgroup (rw,nosuid,nodev,noexec,relatime,cpu,cpuacct)
+cgroup on /sys/fs/cgroup/hugetlb type cgroup (rw,nosuid,nodev,noexec,relatime,hugetlb)
+cgroup on /sys/fs/cgroup/pids type cgroup (rw,nosuid,nodev,noexec,relatime,pids)
+cgroup on /sys/fs/cgroup/rdma type cgroup (rw,nosuid,nodev,noexec,relatime,rdma)
+cgroup on /sys/fs/cgroup/perf_event type cgroup (rw,nosuid,nodev,noexec,relatime,perf_event)
+cgroup on /sys/fs/cgroup/devices type cgroup (rw,nosuid,nodev,noexec,relatime,devices)
+cgroup on /sys/fs/cgroup/cpuset type cgroup (rw,nosuid,nodev,noexec,relatime,cpuset)
+pstore on /sys/fs/pstore type pstore (rw,nosuid,nodev,noexec,relatime)
+debugfs on /sys/kernel/debug type debugfs (rw,relatime)
+fusectl on /sys/fs/fuse/connections type fusectl (rw,relatime)
+configfs on /sys/kernel/config type configfs (rw,relatime)
+proc on /proc type proc (rw,nosuid,nodev,noexec,relatime)
+systemd-1 on /proc/sys/fs/binfmt_misc type autofs (rw,relatime,fd=26,pgrp=1,timeout=0,minproto=5,maxproto=5,direct,pipe_ino=18799)
+/dev/sda1 on /tmp type ext4 (rw,relatime,errors=remount-ro,data=ordered)
+/dev/sda1 on /var/tmp type ext4 (rw,relatime,errors=remount-ro,data=ordered)
+binfmt_misc on /proc/sys/fs/binfmt_misc type binfmt_misc (rw,relatime)
+
+[+] fstab entries
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+#
+# / was on /dev/sda1 during installation
+UUID=d5da515a-b7dc-4405-bd32-5ac8646ad9e3 / ext4 errors=remount-ro 0 1
+/swapfile none swap sw 0 0
+
+[+] Scheduled cron jobs
+-rw-r--r-- 1 root root 722 Nov 16 2017 /etc/crontab
+/etc/cron.d:
+total 28
+drwxr-xr-x 2 root root 4096 Jul 2 15:05 .
+drwxr-xr-x 99 root root 4096 Aug 28 14:41 ..
+-rw-r--r-- 1 root root 1481 Jul 2 15:31 centreon
+-rw-r--r-- 1 root root 705 Jul 2 15:31 centstorage
+-rw-r--r-- 1 root root 712 Dec 17 2018 php
+-rw-r--r-- 1 root root 102 Nov 16 2017 .placeholder
+-rw-r--r-- 1 root root 191 Jul 2 14:10 popularity-contest
+/etc/cron.daily:
+total 52
+drwxr-xr-x 2 root root 4096 Jul 2 14:27 .
+drwxr-xr-x 99 root root 4096 Aug 28 14:41 ..
+-rwxr-xr-x 1 root root 539 Oct 10 2018 apache2
+-rwxr-xr-x 1 root root 1478 Apr 20 2018 apt-compat
+-rwxr-xr-x 1 root root 355 Dec 29 2017 bsdmainutils
+-rwxr-xr-x 1 root root 1176 Nov 3 2017 dpkg
+-rwxr-xr-x 1 root root 372 Aug 21 2017 logrotate
+-rwxr-xr-x 1 root root 1065 Apr 7 2018 man-db
+-rwxr-xr-x 1 root root 538 Mar 1 2018 mlocate
+-rwxr-xr-x 1 root root 249 Jan 25 2018 passwd
+-rw-r--r-- 1 root root 102 Nov 16 2017 .placeholder
+-rwxr-xr-x 1 root root 3477 Feb 21 2018 popularity-contest
+-rwxr-xr-x 1 root root 246 Mar 21 2018 ubuntu-advantage-tools
+/etc/cron.hourly:
+total 12
+drwxr-xr-x 2 root root 4096 Jul 2 14:06 .
+drwxr-xr-x 99 root root 4096 Aug 28 14:41 ..
+-rw-r--r-- 1 root root 102 Nov 16 2017 .placeholder
+/etc/cron.monthly:
+total 12
+drwxr-xr-x 2 root root 4096 Jul 2 14:06 .
+drwxr-xr-x 99 root root 4096 Aug 28 14:41 ..
+-rw-r--r-- 1 root root 102 Nov 16 2017 .placeholder
+/etc/cron.weekly:
+total 16
+drwxr-xr-x 2 root root 4096 Jul 2 14:10 .
+drwxr-xr-x 99 root root 4096 Aug 28 14:41 ..
+-rwxr-xr-x 1 root root 723 Apr 7 2018 man-db
+-rw-r--r-- 1 root root 102 Nov 16 2017 .placeholder
+
+[+] Writable cron dirs
+
+
+[*] ENUMERATING USER AND ENVIRONMENTAL INFO...
+
+[+] Logged in User Activity
+10:14:21 up 45 min, 0 users, load average: 9.42, 8.33, 6.15
+USER TTY FROM LOGIN@ IDLE JCPU PCPU WHAT
+
+[+] Super Users Found:
+root
+
+[+] Environment
+APACHE_RUN_DIR=/var/run/apache2
+APACHE_PID_FILE=/var/run/apache2/apache2.pid
+JOURNAL_STREAM=9:22839
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+INVOCATION_ID=2f10d5fa101e4b2a98b7ebbb62a8ebe7
+APACHE_LOCK_DIR=/var/lock/apache2
+LANG=en_US.UTF-8
+APACHE_RUN_USER=www-data
+APACHE_RUN_GROUP=www-data
+APACHE_LOG_DIR=/var/log/apache2
+PWD=/usr/local/centreon/www
+
+[+] Root and current user history (depends on privs)
+
+[+] Sudoers (privileged)
+
+[+] All users
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/var/run/ircd:/usr/sbin/nologin
+gnats:x:41:41:Gnats Bug-Reporting System (admin):/var/lib/gnats:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:100:102:systemd Network Management,,,:/run/systemd/netif:/usr/sbin/nologin
+systemd-resolve:x:101:103:systemd Resolver,,,:/run/systemd/resolve:/usr/sbin/nologin
+syslog:x:102:106::/home/syslog:/usr/sbin/nologin
+messagebus:x:103:107::/nonexistent:/usr/sbin/nologin
+_apt:x:104:65534::/nonexistent:/usr/sbin/nologin
+uuidd:x:105:109::/run/uuidd:/usr/sbin/nologin
+sysmonitor:x:1000:1000:sysmonitor,,,:/home/sysmonitor:/bin/bash
+sshd:x:106:65534::/run/sshd:/usr/sbin/nologin
+mysql:x:107:113:MySQL Server,,,:/nonexistent:/bin/false
+postfix:x:108:115::/var/spool/postfix:/usr/sbin/nologin
+centreon:x:6000:6000:Centreon Admin:/var/lib/centreon:/bin/bash
+Debian-snmp:x:109:117::/var/lib/snmp:/bin/false
+shelby:x:6001:6001::/home/shelby:/bin/bash
+
+[+] Current User
+www-data
+
+[+] Current User ID
+uid=33(www-data) gid=33(www-data) groups=33(www-data),6000(centreon)
+
+[*] ENUMERATING FILE AND DIRECTORY PERMISSIONS/CONTENTS...
+
+[+] World Writeable Directories for User/Group 'Root'
+drwxrwxrwt 4 root root 80 Dec 7 09:29 /run/lock
+drwxrwxrwt 2 root root 4096 Dec 7 10:13 /tmp
+drwxrwxrwt 2 root root 40 Dec 7 09:28 /dev/mqueue
+drwxrwxrwt 2 root root 40 Dec 7 09:28 /dev/shm
+drwxrwxrwt 2 root root 4096 Dec 7 09:29 /var/tmp
+drwx-wx-wt 2 root root 921600 Dec 7 10:14 /var/lib/php/sessions
+
+[+] World Writeable Directories for Users other than Root
+
+[+] World Writable Files
+-rw-rw-rw- 1 root root 0 Dec 7 09:28 /sys/kernel/security/apparmor/.remove
+-rw-rw-rw- 1 root root 0 Dec 7 09:28 /sys/kernel/security/apparmor/.replace
+-rw-rw-rw- 1 root root 0 Dec 7 09:28 /sys/kernel/security/apparmor/.load
+-rw-rw-rw- 1 root root 0 Dec 7 09:28 /sys/kernel/security/apparmor/.access
+--w--w--w- 1 root root 0 Dec 7 09:56 /sys/fs/cgroup/memory/cgroup.event_control
+-rwxrwxrwx 1 www-data www-data 25304 May 16 2019 /tmp/lp.py
+-rwxrwxrwx 1 www-data www-data 45639 Apr 6 2019 /tmp/LinEnum.sh
+-rwxrwxrwx 1 www-data www-data 0 Dec 7 10:03 /tmp/results.txt
+
+[+] Checking if root's home folder is accessible
+
+[+] SUID/SGID Files and Directories
+-rwsr-xr-x 1 root root 43088 Oct 15 2018 /bin/mount
+-rwsr-xr-x 1 root root 64424 Mar 10 2017 /bin/ping
+-rwsr-xr-x 1 root root 1595624 Jul 4 00:25 /bin/screen-4.5.0
+-rwsr-xr-x 1 root root 30800 Aug 11 2016 /bin/fusermount
+-rwsr-xr-x 1 root root 44664 Mar 22 2019 /bin/su
+-rwsr-xr-x 1 root root 26696 Oct 15 2018 /bin/umount
+-rwxr-sr-x 1 root tty 30800 Oct 15 2018 /usr/bin/wall
+-rwxr-sr-x 1 root shadow 22808 Mar 22 2019 /usr/bin/expiry
+-rwsr-xr-x 1 root root 44528 Mar 22 2019 /usr/bin/chsh
+-rwxr-sr-x 1 root mail 18424 Dec 3 2017 /usr/bin/dotlockfile
+-rwsr-xr-x 1 root root 59640 Mar 22 2019 /usr/bin/passwd
+-rwsr-xr-x 1 root root 75824 Mar 22 2019 /usr/bin/gpasswd
+-rwsr-xr-x 1 root root 18448 Mar 10 2017 /usr/bin/traceroute6.iputils
+-rwsr-xr-x 1 root root 76496 Mar 22 2019 /usr/bin/chfn
+-rwxr-sr-x 1 root mlocate 43088 Mar 1 2018 /usr/bin/mlocate
+-rwxr-sr-x 1 root crontab 39352 Nov 16 2017 /usr/bin/crontab
+-rwxr-sr-x 1 root shadow 71816 Mar 22 2019 /usr/bin/chage
+-rwsr-xr-x 1 root root 40344 Mar 22 2019 /usr/bin/newgrp
+-rwxr-sr-x 1 root tty 14328 Jan 17 2018 /usr/bin/bsd-write
+-rwxr-sr-x 1 root ssh 362640 Mar 4 2019 /usr/bin/ssh-agent
+-rwsr-xr-x 1 root root 149080 Jan 18 2018 /usr/bin/sudo
+-r-xr-sr-x 1 root postdrop 22600 Oct 11 2018 /usr/sbin/postqueue
+-r-xr-sr-x 1 root postdrop 14456 Oct 11 2018 /usr/sbin/postdrop
+-rwsr-xr-- 1 root messagebus 42992 Jun 10 21:05 /usr/lib/dbus-1.0/dbus-daemon-launch-helper
+-rwsr-xr-x 1 root root 436552 Mar 4 2019 /usr/lib/openssh/ssh-keysign
+-r-sr-xr-x 1 root root 13628 Aug 28 14:41 /usr/lib/vmware-tools/bin32/vmware-user-suid-wrapper
+-r-sr-xr-x 1 root root 14320 Aug 28 14:41 /usr/lib/vmware-tools/bin64/vmware-user-suid-wrapper
+-rwsr-xr-x 1 root root 10232 Mar 28 2017 /usr/lib/eject/dmcrypt-get-device
+drwxrwsr-x 3 centreon centreon 4096 Jul 2 15:57 /usr/local/centreon/installDir
+drwxrwsr-x 2 root staff 4096 Jul 2 14:27 /usr/local/share/fonts
+drwxrwsr-x 3 root staff 4096 Jul 2 14:06 /usr/local/lib/python3.6
+drwxrwsr-x 2 root staff 4096 Jul 2 14:06 /usr/local/lib/python3.6/dist-packages
+drwxrwsr-x 4 root staff 4096 Jul 2 14:41 /usr/local/lib/python2.7
+drwxrwsr-x 15 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/paramiko
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cffi
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/bcrypt
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/paramiko-2.6.0.dist-info
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/.libs_cffi_backend
+drwxr-sr-x 3 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/pycparser
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/pycparser/ply
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/bcrypt-3.1.7.dist-info
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cffi-1.12.3.dist-info
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography-2.7.dist-info
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/pycparser-2.19.dist-info
+drwxr-sr-x 4 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/nacl
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/nacl/bindings
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/nacl/pwhash
+drwxr-sr-x 4 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/x509
+drwxr-sr-x 5 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat
+drwxr-sr-x 3 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/bindings
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/bindings/openssl
+drwxr-sr-x 3 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/backends
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/backends/openssl
+drwxr-sr-x 7 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/primitives
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/primitives/kdf
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/primitives/asymmetric
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/primitives/twofactor
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/primitives/ciphers
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/cryptography/hazmat/primitives/serialization
+drwxr-sr-x 2 root staff 4096 Jul 30 17:35 /usr/local/lib/python2.7/dist-packages/PyNaCl-1.3.0.dist-info
+drwxrwsr-x 2 root staff 4096 Jul 2 14:41 /usr/local/lib/python2.7/site-packages
+-rwxr-sr-x 1 root shadow 34816 Feb 27 2019 /sbin/unix_chkpwd
+-rwxr-sr-x 1 root shadow 34816 Feb 27 2019 /sbin/pam_extrausers_chkpwd
+drwx--s--- 2 postfix postdrop 4096 Jul 2 14:27 /var/spool/postfix/public
+drwxr-s--- 2 mysql adm 4096 Jul 2 14:27 /var/log/mysql
+drwxr-sr-x+ 3 root systemd-journal 4096 Jul 2 14:21 /var/log/journal
+drwxr-sr-x+ 2 root systemd-journal 4096 Dec 7 09:28 /var/log/journal/5ca9d3bc21b247cabe18d8a99153a010
+drwxrwsr-x 2 root mail 4096 Jul 2 14:06 /var/mail
+drwxrwsr-x 2 root staff 4096 Apr 24 2018 /var/local
+
+[+] Logs containing keyword 'password'
+
+[+] Config files containing keyword 'password'
+/etc/modsecurity/crs/crs-setup.conf:# Default: .asa/ .asax/ .ascx/ .axd/ .backup/ .bak/ .bat/ .cdx/ .cer/ .cfg/ .cmd/ .com/ .config/ .conf/ .cs/ .csproj/ .csr/ .dat/ .db/ .dbf/ .dll/ .dos/ .htr/ .htw/ .ida/ .idc/ .idq/ .inc/ .ini/ .key/ .licx/ .lnk/ .log/ .mdb/ .old/ .pass/ .pdb/ .pol/ .printer/ .pwd/ .resources/ .resx/ .sql/ .sys/ .vb/ .vbs/ .vbproj/ .vsdisco/ .webinfo/ .xsd/ .xsx/
+/etc/modsecurity/crs/crs-setup.conf:# setvar:'tx.restricted_extensions=.asa/ .asax/ .ascx/ .axd/ .backup/ .bak/ .bat/ .cdx/ .cer/ .cfg/ .cmd/ .com/ .config/ .conf/ .cs/ .csproj/ .csr/ .dat/ .db/ .dbf/ .dll/ .dos/ .htr/ .htw/ .ida/ .idc/ .idq/ .inc/ .ini/ .key/ .licx/ .lnk/ .log/ .mdb/ .old/ .pass/ .pdb/ .pol/ .printer/ .pwd/ .resources/ .resx/ .sql/ .sys/ .vb/ .vbs/ .vbproj/ .vsdisco/ .webinfo/ .xsd/ .xsx/'"
+/etc/modsecurity/crs/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf:# This rule shows how to conditionally exclude the "password"
+/etc/modsecurity/crs/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf:# ctl:ruleRemoveTargetById=942100;ARGS:password"
+/etc/modsecurity/crs/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf:# ModSecurity Rule Exclusion: Disable inspection of ARGS:pwd
+/etc/modsecurity/crs/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf:# ctl:ruleRemoveTargetByTag=attack-sqli;ARGS:pwd"
+/etc/modsecurity/crs/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf:# ModSecurity Rule Exclusion: Disable inspection of ARGS:pwd
+/etc/modsecurity/crs/REQUEST-900-EXCLUSION-RULES-BEFORE-CRS.conf:# ctl:ruleRemoveTargetByTag=CRS;ARGS:pwd"
+/etc/ssl/openssl.cnf:# input_password = secret
+/etc/ssl/openssl.cnf:# output_password = secret
+/etc/ssl/openssl.cnf:challengePassword = A challenge password
+/etc/centreon/centreon.conf.php:$conf_centreon['password'] = 'FKASdm312350.asd';
+/etc/hdparm.conf:# --security-set-pass Set security password
+/etc/hdparm.conf:# security_pass = password
+/etc/hdparm.conf:# --user-master Select password to use
+/etc/apache2/sites-available/default-ssl.conf: # Note that no password is obtained from the user. Every entry in the user
+/etc/apache2/sites-available/default-ssl.conf: # file needs this password: `xxj31ZMTZzkVA'.
+/etc/mysql/mariadb.conf.d/50-server.cnf:# Needed so the root database user can authenticate without a password but
+/etc/mysql/mariadb.conf.d/50-mysqld_safe.cnf:# It has been reported that passwords should be enclosed with ticks/quotes
+/etc/mysql/my.cnf.fallback:# It has been reported that passwords should be enclosed with ticks/quotes
+/etc/centreon-engine/centengine.cfg:# be sensitive (usernames, passwords, etc) can be defined as macros in
+/etc/centreon-engine/resource.cfg:# for storing sensitive information such as usernames, passwords, etc. They are
+/etc/centreon-engine/resource.cfg:# Store some usernames and passwords.
+/etc/centreon-engine/resource.cfg:#$USER4$=somepassword
+/etc/debconf.conf:# World-readable, and accepts everything but passwords.
+/etc/debconf.conf:Reject-Type: password
+/etc/debconf.conf:# Not world readable (the default), and accepts only passwords.
+/etc/debconf.conf:Name: passwords
+/etc/debconf.conf:Accept-Type: password
+/etc/debconf.conf:Filename: /var/cache/debconf/passwords.dat
+/etc/debconf.conf:# databases, one to hold passwords and one for everything else.
+/etc/debconf.conf:Stack: config, passwords
+/etc/debconf.conf:# A remote LDAP database. It is also read-only. The password is really
+/etc/ltrace.conf:; pwd.h
+/etc/postfix/main.cf.proto:# NOTE: if you use this feature for accounts not in the UNIX password
+/etc/postfix/main.cf.proto:# NOTE: if you use this feature for accounts not in the UNIX password
+/etc/postfix/main.cf.proto:# NOTE: if you use this feature for accounts not in the UNIX password
+
+[+] Shadow File (Privileged)
+
+[*] ENUMERATING PROCESSES AND APPLICATIONS...
+
+[+] Installed Packages
+Status=Not/Inst/Conf-files/Unpacked/halF-conf/Half-inst/trig-aWait/Trig-pend
+Err?=(none)/Reinst-required (Status,Err:
+Name Version Description
+accountsservice 0.6.45-1ubuntu1 query and manipulate user account information
+adduser 3.116ubuntu1 add and remove users and groups
+amd64-microcode 3.20180524.1~ubuntu0.18.04.2 Processor microcode firmware for AMD CPUs
+apache2 2.4.29-1ubuntu4.6 Apache HTTP Server
+apache2-bin 2.4.29-1ubuntu4.6 Apache HTTP Server (modules and other binary files)
+apache2-data 2.4.29-1ubuntu4.6 Apache HTTP Server (common files)
+apache2-utils 2.4.29-1ubuntu4.6 Apache HTTP Server (utility programs for web servers)
+apparmor 2.12-4ubuntu5.1 user-space parser utility for AppArmor
+apt 1.6.11 commandline package manager
+apt-transport-https 1.6.11 transitional package for https support
+apt-utils 1.6.11 package management related utility programs
+autotools-dev 20180224.1 Update infrastructure for config.{guess,sub} files
+base-files 10.1ubuntu2.4 Debian base system miscellaneous files
+base-passwd 3.5.44 Debian base system master password and group files
+bash 4.4.18-2ubuntu1.1 GNU Bourne Again SHell
+bash-completion 1:2.8-1ubuntu1 programmable completion for the bash shell
+bind9-host 1:9.11.3+dfsg-1ubuntu1.8 DNS lookup utility (deprecated)
+binutils 2.30-21ubuntu1~18.04.2 GNU assembler, linker and binary utilities
+binutils-common:amd64 2.30-21ubuntu1~18.04.2 Common files for the GNU assembler, linker and binary utilities
+binutils-x86-64-linux-gnu 2.30-21ubuntu1~18.04.2 GNU binary utilities, for x86-64-linux-gnu target
+bsd-mailx 8.1.2-0.20160123cvs-4 simple mail user agent
+bsdmainutils 11.1.2ubuntu1 collection of more utilities from FreeBSD
+bsdutils 1:2.31.1-0.4ubuntu3.3 basic utilities from 4.4BSD-Lite
+build-essential 12.4ubuntu1 Informational list of build-essential packages
+busybox-initramfs 1:1.27.2-2ubuntu3.2 Standalone shell setup for initramfs
+busybox-static 1:1.27.2-2ubuntu3.2 Standalone rescue shell with tons of builtin utilities
+bzip2 1.0.6-8.1ubuntu0.1 high-quality block-sorting file compressor - utilities
+ca-certificates 20180409 Common CA certificates
+cmake 3.10.2-1ubuntu2 cross-platform, open-source make system
+cmake-data 3.10.2-1ubuntu2 CMake data files (modules, templates and documentation)
+command-not-found 18.04.5 Suggest installation of packages in interactive bash sessions
+command-not-found-data 18.04.5 Set of data files for command-not-found.
+console-setup 1.178ubuntu2.9 console font and keymap setup program
+console-setup-linux 1.178ubuntu2.9 Linux specific part of console-setup
+coreutils 8.28-1ubuntu1 GNU core utilities
+cpio 2.12+dfsg-6 GNU cpio -- a program to manage archives of files
+cpp 4:7.4.0-1ubuntu2.3 GNU C preprocessor (cpp)
+cpp-7 7.4.0-1ubuntu1~18.04.1 GNU C preprocessor
+crda 3.18-1build1 wireless Central Regulatory Domain Agent
+cron 3.0pl1-128.1ubuntu1 process scheduling daemon
+dash 0.5.8-2.10 POSIX-compliant shell
+dbus 1.12.2-1ubuntu1.1 simple interprocess messaging system (daemon and utilities)
+debconf 1.5.66ubuntu1 Debian configuration management system
+debconf-i18n 1.5.66ubuntu1 full internationalization support for debconf
+debianutils 4.8.4 Miscellaneous utilities specific to Debian
+debugedit 4.14.1+dfsg1-2 tool to mangle source locations in .debug files
+diffutils 1:3.6-1 File comparison utilities
+dirmngr 2.2.4-1ubuntu1.2 GNU privacy guard - network certificate management service
+distro-info-data 0.37ubuntu0.5 information about the distributions' releases (data files)
+dmidecode 3.1-1 SMBIOS/DMI table decoder
+dmsetup 2:1.02.145-4.1ubuntu3 Linux Kernel Device Mapper userspace library
+dnsutils 1:9.11.3+dfsg-1ubuntu1.8 Clients provided with BIND
+dosfstools 4.1-1 utilities for making and checking MS-DOS FAT filesystems
+dpkg 1.19.0.5ubuntu2.1 Debian package management system
+dpkg-dev 1.19.0.5ubuntu2.1 Debian package development tools
+e2fsprogs 1.44.1-1ubuntu1.1 ext2/ext3/ext4 file system utilities
+ed 1.10-2.1 classic UNIX line editor
+eject 2.1.5+deb1+cvs20081104-13.2 ejects CDs and operates CD-Changers under Linux
+fakeroot 1.22-2ubuntu1 tool for simulating superuser privileges
+fdisk 2.31.1-0.4ubuntu3.3 collection of partitioning utilities
+file 1:5.32-2ubuntu0.2 Recognize the type of data in a file using "magic" numbers
+findutils 4.6.0+git+20170828-2 utilities for finding files--find, xargs
+fontconfig 2.12.6-0ubuntu2 generic font configuration library - support binaries
+fontconfig-config 2.12.6-0ubuntu2 generic font configuration library - configuration
+fonts-dejavu-core 2.37-1 Vera font family derivate with additional characters
+fonts-droid-fallback 1:6.0.1r16-1.1 handheld device font with extensive style and language support (fallback)
+fonts-noto-mono 20171026-2 "No Tofu" monospaced font family with large Unicode coverage
+friendly-recovery 0.2.38ubuntu1 Make recovery boot mode more user-friendly
+ftp 0.17-34 classical file transfer client
+fuse 2.9.7-1ubuntu1 Filesystem in Userspace
+g++ 4:7.4.0-1ubuntu2.3 GNU C++ compiler
+g++-7 7.4.0-1ubuntu1~18.04.1 GNU C++ compiler
+galera-3 25.3.20-1 Replication framework for transactional applications
+gawk 1:4.1.4+dfsg-1build1 GNU awk, a pattern scanning and processing language
+gcc 4:7.4.0-1ubuntu2.3 GNU C compiler
+gcc-7 7.4.0-1ubuntu1~18.04.1 GNU C compiler
+gcc-7-base:amd64 7.4.0-1ubuntu1~18.04.1 GCC, the GNU Compiler Collection (base package)
+gcc-8-base:amd64 8.3.0-6ubuntu1~18.04.1 GCC, the GNU Compiler Collection (base package)
+geoip-database 20180315-1 IP lookup command line tools that use the GeoIP library (country database)
+gettext-base 0.19.8.1-6ubuntu0.3 GNU Internationalization utilities for the base system
+ghostscript 9.26~dfsg+0-0ubuntu0.18.04.9 interpreter for the PostScript language and for PDF
+gir1.2-glib-2.0:amd64 1.56.1-1 Introspection data for GLib, GObject, Gio and GModule
+git 1:2.17.1-1ubuntu0.4 fast, scalable, distributed revision control system
+git-man 1:2.17.1-1ubuntu0.4 fast, scalable, distributed revision control system (manual pages)
+gnupg 2.2.4-1ubuntu1.2 GNU privacy guard - a free PGP replacement
+gnupg-l10n 2.2.4-1ubuntu1.2 GNU privacy guard - localization files
+gnupg-utils 2.2.4-1ubuntu1.2 GNU privacy guard - utility programs
+gpg 2.2.4-1ubuntu1.2 GNU Privacy Guard -- minimalist public key operations
+gpg-agent 2.2.4-1ubuntu1.2 GNU privacy guard - cryptographic agent
+gpg-wks-client 2.2.4-1ubuntu1.2 GNU privacy guard - Web Key Service client
+gpg-wks-server 2.2.4-1ubuntu1.2 GNU privacy guard - Web Key Service server
+gpgconf 2.2.4-1ubuntu1.2 GNU privacy guard - core configuration utilities
+gpgsm 2.2.4-1ubuntu1.2 GNU privacy guard - S/MIME version
+gpgv 2.2.4-1ubuntu1.2 GNU privacy guard - signature verification tool
+grep 3.1-2 GNU grep, egrep and fgrep
+groff-base 1.22.3-10 GNU troff text-formatting system (base system components)
+grub-common 2.02-2ubuntu8.13 GRand Unified Bootloader (common files)
+grub-gfxpayload-lists 0.7 GRUB gfxpayload blacklist
+grub-pc 2.02-2ubuntu8.13 GRand Unified Bootloader, version 2 (PC/BIOS version)
+grub-pc-bin 2.02-2ubuntu8.13 GRand Unified Bootloader, version 2 (PC/BIOS binaries)
+grub2-common 2.02-2ubuntu8.13 GRand Unified Bootloader (common files for version 2)
+gsfonts 1:8.11+urwcyr1.0.7~pre44-4.4 Fonts for the Ghostscript interpreter(s)
+gzip 1.6-5ubuntu1 GNU compression utilities
+hdparm 9.54+ds-1 tune hard disk parameters for high performance
+hostname 3.20 utility to set/show the host name or domain name
+ifupdown 0.8.17ubuntu1.1 high level tools to configure network interfaces
+imagemagick-6-common 8:6.9.7.4+dfsg-16ubuntu6.7 image manipulation programs -- infrastructure
+info 6.5.0.dfsg.1-2 Standalone GNU Info documentation browser
+init 1.51 metapackage ensuring an init system is installed
+init-system-helpers 1.51 helper tools for all init systems
+initramfs-tools 0.130ubuntu3.8 generic modular initramfs generator (automation)
+initramfs-tools-bin 0.130ubuntu3.8 binaries used by initramfs-tools
+initramfs-tools-core 0.130ubuntu3.8 generic modular initramfs generator (core tools)
+install-info 6.5.0.dfsg.1-2 Manage installed documentation in info format
+installation-report 2.62ubuntu1 system installation report
+intel-microcode 3.20190618.0ubuntu0.18.04.1 Processor microcode firmware for Intel CPUs
+iproute2 4.15.0-2ubuntu1 networking and traffic control tools
+iptables 1.6.1-2ubuntu2 administration tools for packet filtering and NAT
+iputils-ping 3:20161105-1ubuntu2 Tools to test the reachability of network hosts
+iputils-tracepath 3:20161105-1ubuntu2 Tools to trace the network path to a remote host
+irqbalance 1.3.0-0.1ubuntu0.18.04.1 Daemon to balance interrupts for SMP systems
+isc-dhcp-client 4.3.5-3ubuntu7.1 DHCP client for automatically obtaining an IP address
+isc-dhcp-common 4.3.5-3ubuntu7.1 common manpages relevant to all of the isc-dhcp packages
+iso-codes 3.79-1 ISO language, territory, currency, script codes and their translations
+iucode-tool 2.3.1-1 Intel processor microcode tool
+iw 4.14-0.1 tool for configuring Linux wireless devices
+kbd 2.0.4-2ubuntu1 Linux console font and keytable utilities
+keyboard-configuration 1.178ubuntu2.9 system-wide keyboard preferences
+klibc-utils 2.0.4-9ubuntu2 small utilities built with klibc for early boot
+kmod 24-1ubuntu3.2 tools for managing Linux kernel modules
+krb5-locales 1.16-2ubuntu0.1 internationalization support for MIT Kerberos
+language-pack-en 1:18.04+20180712 translation updates for language English
+language-pack-en-base 1:18.04+20180712 translations for language English
+language-selector-common 0.188.2 Language selector for Ubuntu
+laptop-detect 0.16 system chassis type checker
+less 487-0.1 pager program similar to more
+libaccountsservice0:amd64 0.6.45-1ubuntu1 query and manipulate user account information - shared libraries
+libacl1:amd64 2.2.52-3build1 Access control list shared library
+libaio1:amd64 0.3.110-5ubuntu0.1 Linux kernel AIO access library - shared library
+libalgorithm-diff-perl 1.19.03-1 module to find differences between files
+libalgorithm-diff-xs-perl 0.04-5 module to find differences between files (XS accelerated)
+libalgorithm-merge-perl 0.08-3 Perl module for three-way merge of textual data
+libapache2-mod-php7.1 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 server-side, HTML-embedded scripting language (Apache 2 module)
+libapache2-mod-php7.3 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 server-side, HTML-embedded scripting language (Apache 2 module)
+libapache2-mod-security2 2.9.2-1 Tighten web applications security for Apache
+libapparmor1:amd64 2.12-4ubuntu5.1 changehat AppArmor library
+libapr1:amd64 1.6.3-2 Apache Portable Runtime Library
+libaprutil1:amd64 1.6.1-2 Apache Portable Runtime Utility Library
+libaprutil1-dbd-sqlite3:amd64 1.6.1-2 Apache Portable Runtime Utility Library - SQLite3 Driver
+libaprutil1-ldap:amd64 1.6.1-2 Apache Portable Runtime Utility Library - LDAP Driver
+libapt-inst2.0:amd64 1.6.11 deb package format runtime library
+libapt-pkg5.0:amd64 1.6.11 package management runtime library
+libarchive13:amd64 3.2.2-3.1ubuntu0.3 Multi-format archive and compression library (shared library)
+libargon2-0:amd64 0~20161029-1.1 memory-hard hashing function - runtime library
+libasan4:amd64 7.4.0-1ubuntu1~18.04.1 AddressSanitizer -- a fast memory error detector
+libasn1-8-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - ASN.1 library
+libassuan0:amd64 2.5.1-2 IPC library for the GnuPG components
+libatm1:amd64 1:2.5.1-2build1 shared library for ATM (Asynchronous Transfer Mode)
+libatomic1:amd64 8.3.0-6ubuntu1~18.04.1 support library providing __atomic built-in functions
+libattr1:amd64 1:2.4.47-2build1 Extended attribute shared library
+libaudio2:amd64 1.9.4-6 Network Audio System - shared libraries
+libaudit-common 1:2.8.2-1ubuntu1 Dynamic library for security auditing - common files
+libaudit1:amd64 1:2.8.2-1ubuntu1 Dynamic library for security auditing
+libavahi-client3:amd64 0.7-3.1ubuntu1.2 Avahi client library
+libavahi-common-data:amd64 0.7-3.1ubuntu1.2 Avahi common data files
+libavahi-common3:amd64 0.7-3.1ubuntu1.2 Avahi common library
+libbind9-160:amd64 1:9.11.3+dfsg-1ubuntu1.8 BIND9 Shared Library used by BIND
+libbinutils:amd64 2.30-21ubuntu1~18.04.2 GNU binary utilities (private shared library)
+libblkid1:amd64 2.31.1-0.4ubuntu3.3 block device ID library
+libbsd0:amd64 0.8.7-1 utility functions from BSD systems - shared library
+libbz2-1.0:amd64 1.0.6-8.1ubuntu0.1 high-quality block-sorting file compressor library - runtime
+libc-bin 2.27-3ubuntu1 GNU C Library: Binaries
+libc-dev-bin 2.27-3ubuntu1 GNU C Library: Development binaries
+libc6:amd64 2.27-3ubuntu1 GNU C Library: Shared libraries
+libc6-dev:amd64 2.27-3ubuntu1 GNU C Library: Development Libraries and Header Files
+libcairo2:amd64 1.15.10-2ubuntu0.1 Cairo 2D vector graphics library
+libcap-ng0:amd64 0.7.7-3.1 An alternate POSIX capabilities library
+libcap2:amd64 1:2.25-1.2 POSIX 1003.1e capabilities (library)
+libcap2-bin 1:2.25-1.2 POSIX 1003.1e capabilities (utilities)
+libcc1-0:amd64 8.3.0-6ubuntu1~18.04.1 GCC cc1 plugin for GDB
+libcgi-fast-perl 1:2.13-1 CGI subclass for work with FCGI
+libcgi-pm-perl 4.38-1 module for Common Gateway Interface applications
+libcilkrts5:amd64 7.4.0-1ubuntu1~18.04.1 Intel Cilk Plus language extensions (runtime)
+libcom-err2:amd64 1.44.1-1ubuntu1.1 common error description library
+libconfig-inifiles-perl 2.94-1 Read .ini-style configuration files
+libcrypt-des-perl 2.07-1build4 Perl DES encryption module
+libcryptsetup12:amd64 2:2.0.2-1ubuntu1.1 disk encryption support - shared library
+libcups2:amd64 2.2.7-1ubuntu2.6 Common UNIX Printing System(tm) - Core library
+libcupsfilters1:amd64 1.20.2-0ubuntu3.1 OpenPrinting CUPS Filters - Shared library
+libcupsimage2:amd64 2.2.7-1ubuntu2.6 Common UNIX Printing System(tm) - Raster image library
+libcurl3-gnutls:amd64 7.58.0-2ubuntu3.7 easy-to-use client-side URL transfer library (GnuTLS flavour)
+libcurl4:amd64 7.58.0-2ubuntu3.7 easy-to-use client-side URL transfer library (OpenSSL flavour)
+libdatrie1:amd64 0.2.10-7 Double-array trie library
+libdb5.3:amd64 5.3.28-13.1ubuntu1.1 Berkeley v5.3 Database Libraries [runtime]
+libdbd-mysql-perl 4.046-1 Perl5 database interface to the MariaDB/MySQL database
+libdbi-perl 1.640-1 Perl Database Interface (DBI)
+libdbi1:amd64 0.9.0-5 DB Independent Abstraction Layer for C -- shared library
+libdbus-1-3:amd64 1.12.2-1ubuntu1.1 simple interprocess messaging system (library)
+libdebconfclient0:amd64 0.213ubuntu1 Debian Configuration Management System (C-implementation library)
+libdevmapper1.02.1:amd64 2:1.02.145-4.1ubuntu3 Linux Kernel Device Mapper userspace library
+libdigest-hmac-perl 1.03+dfsg-1 module for creating standard message integrity checks
+libdigest-sha-perl 6.01-1 Perl extension for SHA-1/224/256/384/512, SHA-512/224 and SHA-512/256
+libdns-export1100 1:9.11.3+dfsg-1ubuntu1.8 Exported DNS Shared Library
+libdns1100:amd64 1:9.11.3+dfsg-1ubuntu1.8 DNS Shared Library used by BIND
+libdpkg-perl 1.19.0.5ubuntu2.1 Dpkg perl modules
+libdrm-amdgpu1:amd64 2.4.95-1~18.04.1 Userspace interface to amdgpu-specific kernel DRM services -- runtime
+libdrm-common 2.4.95-1~18.04.1 Userspace interface to kernel DRM services -- common files
+libdrm-dev:amd64 2.4.95-1~18.04.1 Userspace interface to kernel DRM services -- development files
+libdrm-intel1:amd64 2.4.95-1~18.04.1 Userspace interface to intel-specific kernel DRM services -- runtime
+libdrm-nouveau2:amd64 2.4.95-1~18.04.1 Userspace interface to nouveau-specific kernel DRM services -- runtime
+libdrm-radeon1:amd64 2.4.95-1~18.04.1 Userspace interface to radeon-specific kernel DRM services -- runtime
+libdrm2:amd64 2.4.95-1~18.04.1 Userspace interface to kernel DRM services -- runtime
+libdw1:amd64 0.170-0.4ubuntu0.1 library that provides access to the DWARF debug information
+libedit2:amd64 3.1-20170329-1 BSD editline and history libraries
+libegl-mesa0:amd64 18.2.8-0ubuntu0~18.04.2 free implementation of the EGL API -- Mesa vendor library
+libegl1:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library -- EGL support
+libelf1:amd64 0.170-0.4ubuntu0.1 library to read and write ELF files
+libencode-locale-perl 1.05-1 utility to determine the locale encoding
+liberror-perl 0.17025-1 Perl module for error/exception handling in an OO-ish way
+libestr0:amd64 0.1.10-2.1 Helper functions for handling strings (lib)
+libevent-2.1-6:amd64 2.1.8-stable-4build1 Asynchronous event notification library
+libexpat1:amd64 2.2.5-3ubuntu0.1 XML parsing C library - runtime library
+libexpat1-dev:amd64 2.2.5-3ubuntu0.1 XML parsing C library - development kit
+libext2fs2:amd64 1.44.1-1ubuntu1.1 ext2/ext3/ext4 file system libraries
+libfakeroot:amd64 1.22-2ubuntu1 tool for simulating superuser privileges - shared libraries
+libfastjson4:amd64 0.99.8-2 fast json library for C
+libfcgi-perl 0.78-2build1 helper module for FastCGI
+libfdisk1:amd64 2.31.1-0.4ubuntu3.3 fdisk partitioning library
+libffi6:amd64 3.2.1-8 Foreign Function Interface library runtime
+libfftw3-double3:amd64 3.3.7-1 Library for computing Fast Fourier Transforms - Double precision
+libfile-fcntllock-perl 0.22-3build2 Perl module for file locking with fcntl(2)
+libfontconfig1:amd64 2.12.6-0ubuntu2 generic font configuration library - runtime
+libfreetype6:amd64 2.8.1-2ubuntu2 FreeType 2 font engine, shared library files
+libfribidi0:amd64 0.19.7-2 Free Implementation of the Unicode BiDi algorithm
+libfuse2:amd64 2.9.7-1ubuntu1 Filesystem in Userspace (library)
+libgbm1:amd64 18.2.8-0ubuntu0~18.04.2 generic buffer management API -- runtime
+libgcc-7-dev:amd64 7.4.0-1ubuntu1~18.04.1 GCC support library (development files)
+libgcc1:amd64 1:8.3.0-6ubuntu1~18.04.1 GCC support library
+libgcrypt20:amd64 1.8.1-4ubuntu1.1 LGPL Crypto library - runtime library
+libgd-perl 2.66-1build1 Perl module wrapper for libgd
+libgd3:amd64 2.2.5-5.1+ubuntu18.04.1+deb.sury.org+1 GD Graphics Library
+libgdbm-compat4:amd64 1.14.1-6 GNU dbm database routines (legacy support runtime version)
+libgdbm5:amd64 1.14.1-6 GNU dbm database routines (runtime version)
+libgeoip1:amd64 1.6.12-1 non-DNS IP-to-country resolver library
+libgirepository-1.0-1:amd64 1.56.1-1 Library for handling GObject introspection data (runtime library)
+libgl1:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library -- legacy GL support
+libgl1-mesa-dev:amd64 18.2.8-0ubuntu0~18.04.2 free implementation of the OpenGL API -- GLX development files
+libgl1-mesa-dri:amd64 18.2.8-0ubuntu0~18.04.2 free implementation of the OpenGL API -- DRI modules
+libglapi-mesa:amd64 18.2.8-0ubuntu0~18.04.2 free implementation of the GL API -- shared library
+libgles1:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library -- GLESv1 support
+libgles2:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library -- GLESv2 support
+libglib2.0-0:amd64 2.56.4-0ubuntu0.18.04.3 GLib library of C routines
+libglib2.0-data 2.56.4-0ubuntu0.18.04.3 Common files for GLib library
+libglu1-mesa:amd64 9.0.0-2.1build1 Mesa OpenGL utility library (GLU)
+libglu1-mesa-dev:amd64 9.0.0-2.1build1 Mesa OpenGL utility library -- development files
+libglvnd-core-dev:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library -- core development files
+libglvnd-dev:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library -- development files
+libglvnd0:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library
+libglx-mesa0:amd64 18.2.8-0ubuntu0~18.04.2 free implementation of the OpenGL API -- GLX vendor library
+libglx0:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library -- GLX support
+libgmp-dev:amd64 2:6.1.2+dfsg-2 Multiprecision arithmetic library developers tools
+libgmp10:amd64 2:6.1.2+dfsg-2 Multiprecision arithmetic library
+libgmpxx4ldbl:amd64 2:6.1.2+dfsg-2 Multiprecision arithmetic library (C++ bindings)
+libgnutls-dane0:amd64 3.5.18-1ubuntu1.1 GNU TLS library - DANE security support
+libgnutls-openssl27:amd64 3.5.18-1ubuntu1.1 GNU TLS library - OpenSSL wrapper
+libgnutls28-dev:amd64 3.5.18-1ubuntu1.1 GNU TLS library - development files
+libgnutls30:amd64 3.5.18-1ubuntu1.1 GNU TLS library - main runtime library
+libgnutlsxx28:amd64 3.5.18-1ubuntu1.1 GNU TLS library - C++ runtime library
+libgomp1:amd64 8.3.0-6ubuntu1~18.04.1 GCC OpenMP (GOMP) support library
+libgpg-error0:amd64 1.27-6 library for common error values and messages in GnuPG components
+libgraphite2-3:amd64 1.3.11-2 Font rendering engine for Complex Scripts -- library
+libgs9:amd64 9.26~dfsg+0-0ubuntu0.18.04.9 interpreter for the PostScript language and for PDF - Library
+libgs9-common 9.26~dfsg+0-0ubuntu0.18.04.9 interpreter for the PostScript language and for PDF - common files
+libgssapi-krb5-2:amd64 1.16-2ubuntu0.1 MIT Kerberos runtime libraries - krb5 GSS-API Mechanism
+libgssapi3-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - GSSAPI support library
+libharfbuzz0b:amd64 1.7.2-1ubuntu1 OpenType text shaping engine (shared library)
+libhcrypto4-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - crypto library
+libheimbase1-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - Base library
+libheimntlm0-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - NTLM support library
+libhogweed4:amd64 3.4-1 low level cryptographic library (public-key cryptos)
+libhtml-parser-perl 3.72-3build1 collection of modules that parse HTML text documents
+libhtml-tagset-perl 3.20-3 Data tables pertaining to HTML
+libhtml-template-perl 2.97-1 module for using HTML templates with Perl
+libhttp-date-perl 6.02-1 module of date conversion routines
+libhttp-message-perl 6.14-1 perl interface to HTTP style messages
+libhx509-5-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - X509 support library
+libice6:amd64 2:1.0.9-2 X11 Inter-Client Exchange library
+libicu60:amd64 60.2-3ubuntu3 International Components for Unicode
+libicu64:amd64 64.1-0.1+ubuntu18.04.1+deb.sury.org+1 International Components for Unicode
+libidn11:amd64 1.33-2.1ubuntu1.2 GNU Libidn library, implementation of IETF IDN specifications
+libidn2-0:amd64 2.0.4-1.1build2 Internationalized domain names (IDNA2008/TR46) library
+libidn2-0-dev 2.0.4-1.1build2 Internationalized domain names (IDNA2008/TR46) development files [dummy]
+libidn2-dev:amd64 2.0.4-1.1build2 Internationalized domain names (IDNA2008/TR46) development files
+libijs-0.35:amd64 0.35-13 IJS raster image transport protocol: shared library
+libio-html-perl 1.001-1 open an HTML file with automatic charset detection
+libip4tc0:amd64 1.6.1-2ubuntu2 netfilter libip4tc library
+libip6tc0:amd64 1.6.1-2ubuntu2 netfilter libip6tc library
+libiptc0:amd64 1.6.1-2ubuntu2 netfilter libiptc library
+libirs160:amd64 1:9.11.3+dfsg-1ubuntu1.8 DNS Shared Library used by BIND
+libisc-export169:amd64 1:9.11.3+dfsg-1ubuntu1.8 Exported ISC Shared Library
+libisc169:amd64 1:9.11.3+dfsg-1ubuntu1.8 ISC Shared Library used by BIND
+libisccc160:amd64 1:9.11.3+dfsg-1ubuntu1.8 Command Channel Library used by BIND
+libisccfg160:amd64 1:9.11.3+dfsg-1ubuntu1.8 Config File Handling Library used by BIND
+libisl19:amd64 0.19-1 manipulating sets and relations of integer points bounded by linear constraints
+libitm1:amd64 8.3.0-6ubuntu1~18.04.1 GNU Transactional Memory Library
+libjbig0:amd64 2.1-3.1build1 JBIGkit libraries
+libjbig2dec0:amd64 0.13-6 JBIG2 decoder library - shared libraries
+libjemalloc1 3.6.0-11 general-purpose scalable concurrent malloc(3) implementation
+libjpeg-turbo8:amd64 1.5.2-0ubuntu5.18.04.1 IJG JPEG compliant runtime library.
+libjpeg8:amd64 8c-2ubuntu8 Independent JPEG Group's JPEG runtime library (dependency package)
+libjson-c3:amd64 0.12.1-1.3 JSON manipulation library - shared library
+libjsoncpp1:amd64 1.7.4-3 library for reading and writing JSON for C++
+libk5crypto3:amd64 1.16-2ubuntu0.1 MIT Kerberos runtime libraries - Crypto Library
+libkeyutils1:amd64 1.5.9-9.2ubuntu2 Linux Key Management Utilities (library)
+libklibc 2.0.4-9ubuntu2 minimal libc subset for use with initramfs
+libkmod2:amd64 24-1ubuntu3.2 libkmod shared library
+libkrb5-26-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - libraries
+libkrb5-3:amd64 1.16-2ubuntu0.1 MIT Kerberos runtime libraries
+libkrb5support0:amd64 1.16-2ubuntu0.1 MIT Kerberos runtime libraries - Support library
+libksba8:amd64 1.3.5-2 X.509 and CMS support library
+liblcms2-2:amd64 2.9-1ubuntu0.1 Little CMS 2 color management library
+libldap-2.4-2:amd64 2.4.45+dfsg-1ubuntu1.2 OpenLDAP libraries
+libldap-common 2.4.45+dfsg-1ubuntu1.2 OpenLDAP common files for libraries
+libllvm7:amd64 1:7-3~ubuntu0.18.04.1 Modular compiler and toolchain technologies, runtime library
+liblocale-gettext-perl 1.07-3build2 module using libc functions for internationalization in Perl
+liblockfile-bin 1.14-1.1 support binaries for and cli utilities based on liblockfile
+liblockfile1:amd64 1.14-1.1 NFS-safe locking library
+liblqr-1-0:amd64 0.4.2-2.1 converts plain array images into multi-size representation
+liblsan0:amd64 8.3.0-6ubuntu1~18.04.1 LeakSanitizer -- a memory leak detector (runtime)
+libltdl-dev:amd64 2.4.6-2 System independent dlopen wrapper for GNU libtool
+libltdl7:amd64 2.4.6-2 System independent dlopen wrapper for GNU libtool
+liblua5.1-0:amd64 5.1.5-8.1build2 Shared library for the Lua interpreter version 5.1
+liblua5.1-0-dev:amd64 5.1.5-8.1build2 Development files for the Lua language version 5.1
+liblua5.2-0:amd64 5.2.4-1.1build1 Shared library for the Lua interpreter version 5.2
+liblua50 5.0.3-8 Main interpreter library for the Lua 5.0 programming language
+liblua50-dev 5.0.3-8 Main interpreter library for Lua 5.0: static library and headers
+liblualib50 5.0.3-8 Extension library for the Lua 5.0 programming language
+liblualib50-dev 5.0.3-8 Extension library for Lua 5.0: static and headers
+liblwp-mediatypes-perl 6.02-1 module to guess media type for a file or a URL
+liblwres160:amd64 1:9.11.3+dfsg-1ubuntu1.8 Lightweight Resolver Library used by BIND
+liblz4-1:amd64 0.0~r131-2ubuntu3 Fast LZ compression algorithm library - runtime
+liblzma5:amd64 5.2.2-1.3 XZ-format compression library
+liblzo2-2:amd64 2.08-1.2 data compression library
+libmagic-mgc 1:5.32-2ubuntu0.2 File type determination library using "magic" numbers (compiled magic file)
+libmagic1:amd64 1:5.32-2ubuntu0.2 Recognize the type of data in a file using "magic" numbers - library
+libmagickcore-6.q16-3:amd64 8:6.9.7.4+dfsg-16ubuntu6.7 low-level image manipulation library -- quantum depth Q16
+libmagickwand-6.q16-3:amd64 8:6.9.7.4+dfsg-16ubuntu6.7 image manipulation library -- quantum depth Q16
+libmcrypt4 2.5.8-3.3 De-/Encryption Library
+libmng2:amd64 2.0.2-0ubuntu3 Multiple-image Network Graphics library
+libmnl0:amd64 1.0.4-2 minimalistic Netlink communication library
+libmount1:amd64 2.31.1-0.4ubuntu3.3 device mounting library
+libmpc3:amd64 1.1.0-1 multiple precision complex floating-point library
+libmpdec2:amd64 2.4.2-1ubuntu1 library for decimal floating point arithmetic (runtime library)
+libmpfr6:amd64 4.0.1-1 multiple precision floating-point computation
+libmpx2:amd64 8.3.0-6ubuntu1~18.04.1 Intel memory protection extensions (runtime)
+libmysqlclient20:amd64 5.7.26-0ubuntu0.18.04.1 MySQL database client library
+libncurses5:amd64 6.1-1ubuntu1.18.04 shared libraries for terminal handling
+libncursesw5:amd64 6.1-1ubuntu1.18.04 shared libraries for terminal handling (wide character support)
+libnetfilter-conntrack3:amd64 1.0.6-2 Netfilter netlink-conntrack library
+libnettle6:amd64 3.4-1 low level cryptographic library (symmetric and one-way cryptos)
+libnewt0.52:amd64 0.52.20-1ubuntu1 Not Erik's Windowing Toolkit - text mode windowing with slang
+libnfnetlink0:amd64 1.0.1-3 Netfilter netlink library
+libnghttp2-14:amd64 1.30.0-1ubuntu1 library implementing HTTP/2 protocol (shared library)
+libnih1:amd64 1.0.3-6ubuntu2 NIH Utility Library
+libnl-3-200:amd64 3.2.29-0ubuntu3 library for dealing with netlink sockets
+libnl-genl-3-200:amd64 3.2.29-0ubuntu3 library for dealing with netlink sockets - generic netlink
+libnpth0:amd64 1.5-3 replacement for GNU Pth using system threads
+libnspr4:amd64 2:4.18-1ubuntu1 NetScape Portable Runtime Library
+libnss-systemd:amd64 237-3ubuntu10.23 nss module providing dynamic user and group name resolution
+libnss3:amd64 2:3.35-2ubuntu2.2 Network Security Service libraries
+libntfs-3g88 1:2017.3.23-2ubuntu0.18.04.2 read/write NTFS driver for FUSE (runtime library)
+libnuma1:amd64 2.0.11-2.1ubuntu0.1 Libraries for controlling NUMA policy
+libopengl0:amd64 1.0.0-2ubuntu2.3 Vendor neutral GL dispatch library -- OpenGL support
+libp11-kit-dev:amd64 0.23.9-2 library for loading and coordinating access to PKCS#11 modules - development
+libp11-kit0:amd64 0.23.9-2 library for loading and coordinating access to PKCS#11 modules - runtime
+libpam-cap:amd64 1:2.25-1.2 POSIX 1003.1e capabilities (PAM module)
+libpam-modules:amd64 1.1.8-3.6ubuntu2.18.04.1 Pluggable Authentication Modules for PAM
+libpam-modules-bin 1.1.8-3.6ubuntu2.18.04.1 Pluggable Authentication Modules for PAM - helper binaries
+libpam-runtime 1.1.8-3.6ubuntu2.18.04.1 Runtime support for the PAM library
+libpam-systemd:amd64 237-3ubuntu10.23 system and service manager - PAM module
+libpam0g:amd64 1.1.8-3.6ubuntu2.18.04.1 Pluggable Authentication Modules library
+libpango-1.0-0:amd64 1.40.14-1ubuntu0.1 Layout and rendering of internationalized text
+libpangocairo-1.0-0:amd64 1.40.14-1ubuntu0.1 Layout and rendering of internationalized text
+libpangoft2-1.0-0:amd64 1.40.14-1ubuntu0.1 Layout and rendering of internationalized text
+libpaper-utils 1.1.24+nmu5ubuntu1 library for handling paper characteristics (utilities)
+libpaper1:amd64 1.1.24+nmu5ubuntu1 library for handling paper characteristics
+libparted2:amd64 3.2-20ubuntu0.2 disk partition manipulator - shared library
+libpcap0.8:amd64 1.8.1-6ubuntu1 system interface for user-level packet capture
+libpci-dev 1:3.5.2-1ubuntu1.1 Linux PCI Utilities (development files)
+libpci3:amd64 1:3.5.2-1ubuntu1.1 Linux PCI Utilities (shared library)
+libpciaccess0:amd64 0.14-1 Generic PCI access library for X
+libpcre2-8-0:amd64 10.31-3+ubuntu18.04.1+deb.sury.org+1 New Perl Compatible Regular Expression Library- 8 bit runtime files
+libpcre3:amd64 2:8.42-1+ubuntu18.04.1+deb.sury.org+1 Perl 5 Compatible Regular Expression Library - runtime files
+libperl5.26:amd64 5.26.1-6ubuntu0.3 shared Perl library
+libpipeline1:amd64 1.5.0-1 pipeline manipulation library
+libpixman-1-0:amd64 0.34.0-2 pixel-manipulation library for X and cairo
+libplymouth4:amd64 0.9.3-1ubuntu7.18.04.2 graphical boot animation and logger - shared libraries
+libpng16-16:amd64 1.6.34-1ubuntu0.18.04.2 PNG library - runtime (version 1.6)
+libpolkit-gobject-1-0:amd64 0.105-20ubuntu0.18.04.5 PolicyKit Authorization API
+libpopt0:amd64 1.16-11 lib for parsing cmdline parameters
+libprocps6:amd64 2:3.3.12-3ubuntu1.1 library for accessing process information from /proc
+libpsl5:amd64 0.19.1-5build1 Library for Public Suffix List (shared libraries)
+libpthread-stubs0-dev:amd64 0.3-4 pthread stubs not provided by native libc, development files
+libpython-all-dev:amd64 2.7.15~rc1-1 package depending on all supported Python development packages
+libpython-dev:amd64 2.7.15~rc1-1 header files and a static library for Python (default)
+libpython-stdlib:amd64 2.7.15~rc1-1 interactive high-level object-oriented language (default python version)
+libpython2.7:amd64 2.7.15-4ubuntu4~18.04 Shared Python runtime library (version 2.7)
+libpython2.7-dev:amd64 2.7.15-4ubuntu4~18.04 Header files and a static library for Python (v2.7)
+libpython2.7-minimal:amd64 2.7.15-4ubuntu4~18.04 Minimal subset of the Python language (version 2.7)
+libpython2.7-stdlib:amd64 2.7.15-4ubuntu4~18.04 Interactive high-level object-oriented language (standard library, version 2.7)
+libpython3-stdlib:amd64 3.6.7-1~18.04 interactive high-level object-oriented language (default python3 version)
+libpython3.6-minimal:amd64 3.6.8-1~18.04.1 Minimal subset of the Python language (version 3.6)
+libpython3.6-stdlib:amd64 3.6.8-1~18.04.1 Interactive high-level object-oriented language (standard library, version 3.6)
+libqt4-dbus:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 D-Bus module
+libqt4-declarative:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 Declarative module
+libqt4-designer:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 designer module
+libqt4-dev 4:4.8.7+dfsg-7ubuntu1 Qt 4 development files
+libqt4-dev-bin 4:4.8.7+dfsg-7ubuntu1 Qt 4 development programs
+libqt4-help:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 help module
+libqt4-network:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 network module
+libqt4-opengl:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 OpenGL module
+libqt4-opengl-dev 4:4.8.7+dfsg-7ubuntu1 Qt 4 OpenGL library development files
+libqt4-qt3support:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 3 compatibility library for Qt 4
+libqt4-script:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 script module
+libqt4-scripttools:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 script tools module
+libqt4-sql:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 SQL module
+libqt4-sql-mysql:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 MySQL database driver
+libqt4-svg:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 SVG module
+libqt4-test:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 test module
+libqt4-xml:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 XML module
+libqt4-xmlpatterns:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 XML patterns module
+libqtcore4:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 core module
+libqtdbus4:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 D-Bus module library
+libqtgui4:amd64 4:4.8.7+dfsg-7ubuntu1 Qt 4 GUI module
+libquadmath0:amd64 8.3.0-6ubuntu1~18.04.1 GCC Quad-Precision Math Library
+libreadline-dev:amd64 7.0-3 GNU readline and history libraries, development files
+libreadline5:amd64 5.2+dfsg-3build1 GNU readline and history libraries, run-time libraries
+libreadline7:amd64 7.0-3 GNU readline and history libraries, run-time libraries
+librecode0:amd64 3.6-23 Shared library on which recode is based
+librhash0:amd64 1.3.6-2 shared library for hash functions computing
+libroken18-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - roken support library
+librpm8 4.14.1+dfsg1-2 RPM shared library
+librpmbuild8 4.14.1+dfsg1-2 RPM build shared library
+librpmio8 4.14.1+dfsg1-2 RPM IO shared library
+librpmsign8 4.14.1+dfsg1-2 RPM signing shared library
+librrd-dev:amd64 1.7.0-1build1 time-series data storage and display system (development)
+librrd8:amd64 1.7.0-1build1 time-series data storage and display system (runtime library)
+librtmp1:amd64 2.4+20151223.gitfa8646d.1-1 toolkit for RTMP streams (shared library)
+libsasl2-2:amd64 2.1.27~101-g0780600+dfsg-3ubuntu2 Cyrus SASL - authentication abstraction library
+libsasl2-modules:amd64 2.1.27~101-g0780600+dfsg-3ubuntu2 Cyrus SASL - pluggable authentication modules
+libsasl2-modules-db:amd64 2.1.27~101-g0780600+dfsg-3ubuntu2 Cyrus SASL - pluggable authentication modules (DB)
+libseccomp2:amd64 2.4.1-0ubuntu0.18.04.2 high level interface to Linux seccomp filter
+libselinux1:amd64 2.7-2build2 SELinux runtime shared libraries
+libsemanage-common 2.7-2build2 Common files for SELinux policy management libraries
+libsemanage1:amd64 2.7-2build2 SELinux policy management library
+libsensors4:amd64 1:3.4.0-4 library to read temperature/voltage/fan sensors
+libsensors4-dev 1:3.4.0-4 lm-sensors development kit
+libsepol1:amd64 2.7-1 SELinux library for manipulating binary security policies
+libsigsegv2:amd64 2.12-1 Library for handling page faults in a portable way
+libslang2:amd64 2.3.1a-3ubuntu1 S-Lang programming library - runtime version
+libsm6:amd64 2:1.2.2-1 X11 Session Management library
+libsmartcols1:amd64 2.31.1-0.4ubuntu3.3 smart column output alignment library
+libsnmp-base 5.7.3+dfsg-1.8ubuntu3.1 SNMP configuration script, MIBs and documentation
+libsnmp-dev 5.7.3+dfsg-1.8ubuntu3.1 SNMP (Simple Network Management Protocol) development files
+libsnmp30:amd64 5.7.3+dfsg-1.8ubuntu3.1 SNMP (Simple Network Management Protocol) library
+libsodium23:amd64 1.0.17-0.1+ubuntu18.04.1+deb.sury.org+1 Network communication, cryptography and signaturing library
+libsqlite0 2.8.17-14fakesync1 SQLite 2 shared library
+libsqlite3-0:amd64 3.22.0-1ubuntu0.1 SQLite 3 shared library
+libsqlite3-dev:amd64 3.22.0-1ubuntu0.1 SQLite 3 development files
+libss2:amd64 1.44.1-1ubuntu1.1 command-line interface parsing library
+libssl-dev:amd64 1.1.1c-1+ubuntu18.04.1+deb.sury.org+1 Secure Sockets Layer toolkit - development files
+libssl1.0.0:amd64 1.0.2n-1ubuntu5.3 Secure Sockets Layer toolkit - shared libraries
+libssl1.1:amd64 1.1.1c-1+ubuntu18.04.1+deb.sury.org+1 Secure Sockets Layer toolkit - shared libraries
+libstdc++-7-dev:amd64 7.4.0-1ubuntu1~18.04.1 GNU Standard C++ Library v3 (development files)
+libstdc++6:amd64 8.3.0-6ubuntu1~18.04.1 GNU Standard C++ Library v3
+libsystemd0:amd64 237-3ubuntu10.23 systemd utility library
+libtasn1-6:amd64 4.13-2 Manage ASN.1 structures (runtime)
+libtasn1-6-dev:amd64 4.13-2 Manage ASN.1 structures (development)
+libtasn1-doc 4.13-2 Manage ASN.1 structures (documentation)
+libterm-readkey-perl 2.37-1build1 perl module for simple terminal control
+libtext-charwidth-perl 0.04-7.1 get display widths of characters on the terminal
+libtext-iconv-perl 1.7-5build6 converts between character sets in Perl
+libtext-wrapi18n-perl 0.06-7.1 internationalized substitute of Text::Wrap
+libthai-data 0.1.27-2 Data files for Thai language support library
+libthai0:amd64 0.1.27-2 Thai language support library
+libtidy5deb1:amd64 2:5.6.0-6+ubuntu18.04.1+deb.sury.org+2 HTML/XML syntax checker and reformatter - shared library
+libtiff5:amd64 4.0.9-5ubuntu0.2 Tag Image File Format (TIFF) library
+libtimedate-perl 2.3000-2 collection of modules to manipulate date/time information
+libtinfo-dev:amd64 6.1-1ubuntu1.18.04 developer's library for the low-level terminfo library
+libtinfo5:amd64 6.1-1ubuntu1.18.04 shared low-level terminfo library for terminal handling
+libtool 2.4.6-2 Generic library support script
+libtool-bin 2.4.6-2 Generic library support script (libtool binary)
+libtsan0:amd64 8.3.0-6ubuntu1~18.04.1 ThreadSanitizer -- a Valgrind-based detector of data races (runtime)
+libubsan0:amd64 7.4.0-1ubuntu1~18.04.1 UBSan -- undefined behaviour sanitizer (runtime)
+libudev-dev:amd64 237-3ubuntu10.23 libudev development files
+libudev1:amd64 237-3ubuntu10.23 libudev shared library
+libunbound2:amd64 1.6.7-1ubuntu2.2 library implementing DNS resolution and validation
+libunistring2:amd64 0.9.9-0ubuntu2 Unicode string library for C
+libunwind8:amd64 1.2.1-8 library to determine the call-chain of a program - runtime
+liburi-perl 1.73-1 module to manipulate and access URI strings
+libusb-1.0-0:amd64 2:1.0.21-2 userspace USB programming library
+libuuid1:amd64 2.31.1-0.4ubuntu3.3 Universally Unique ID library
+libuv1:amd64 1.18.0-3 asynchronous event notification library - runtime library
+libwayland-client0:amd64 1.16.0-1ubuntu1.1~18.04.1 wayland compositor infrastructure - client library
+libwayland-server0:amd64 1.16.0-1ubuntu1.1~18.04.1 wayland compositor infrastructure - server library
+libwebp6:amd64 0.6.1-2 Lossy compression of digital photographic images.
+libwind0-heimdal:amd64 7.5.0+dfsg-1 Heimdal Kerberos - stringprep implementation
+libwrap0:amd64 7.6.q-27 Wietse Venema's TCP wrappers library
+libwrap0-dev:amd64 7.6.q-27 Wietse Venema's TCP wrappers library, development files
+libx11-6:amd64 2:1.6.4-3ubuntu0.2 X11 client-side library
+libx11-data 2:1.6.4-3ubuntu0.2 X11 client-side library
+libx11-dev:amd64 2:1.6.4-3ubuntu0.2 X11 client-side library (development headers)
+libx11-doc 2:1.6.4-3ubuntu0.2 X11 client-side library (development documentation)
+libx11-xcb-dev:amd64 2:1.6.4-3ubuntu0.2 Xlib/XCB interface library (development headers)
+libx11-xcb1:amd64 2:1.6.4-3ubuntu0.2 Xlib/XCB interface library
+libxau-dev:amd64 1:1.0.8-1 X11 authorisation library (development headers)
+libxau6:amd64 1:1.0.8-1 X11 authorisation library
+libxcb-dri2-0:amd64 1.13-2~ubuntu18.04 X C Binding, dri2 extension
+libxcb-dri2-0-dev:amd64 1.13-2~ubuntu18.04 X C Binding, dri2 extension, development files
+libxcb-dri3-0:amd64 1.13-2~ubuntu18.04 X C Binding, dri3 extension
+libxcb-dri3-dev:amd64 1.13-2~ubuntu18.04 X C Binding, dri3 extension, development files
+libxcb-glx0:amd64 1.13-2~ubuntu18.04 X C Binding, glx extension
+libxcb-glx0-dev:amd64 1.13-2~ubuntu18.04 X C Binding, glx extension, development files
+libxcb-present-dev:amd64 1.13-2~ubuntu18.04 X C Binding, present extension, development files
+libxcb-present0:amd64 1.13-2~ubuntu18.04 X C Binding, present extension
+libxcb-randr0:amd64 1.13-2~ubuntu18.04 X C Binding, randr extension
+libxcb-randr0-dev:amd64 1.13-2~ubuntu18.04 X C Binding, randr extension, development files
+libxcb-render0:amd64 1.13-2~ubuntu18.04 X C Binding, render extension
+libxcb-render0-dev:amd64 1.13-2~ubuntu18.04 X C Binding, render extension, development files
+libxcb-shape0:amd64 1.13-2~ubuntu18.04 X C Binding, shape extension
+libxcb-shape0-dev:amd64 1.13-2~ubuntu18.04 X C Binding, shape extension, development files
+libxcb-shm0:amd64 1.13-2~ubuntu18.04 X C Binding, shm extension
+libxcb-sync-dev:amd64 1.13-2~ubuntu18.04 X C Binding, sync extension, development files
+libxcb-sync1:amd64 1.13-2~ubuntu18.04 X C Binding, sync extension
+libxcb-xfixes0:amd64 1.13-2~ubuntu18.04 X C Binding, xfixes extension
+libxcb-xfixes0-dev:amd64 1.13-2~ubuntu18.04 X C Binding, xfixes extension, development files
+libxcb1:amd64 1.13-2~ubuntu18.04 X C Binding
+libxcb1-dev:amd64 1.13-2~ubuntu18.04 X C Binding, development files
+libxdamage-dev:amd64 1:1.1.4-3 X11 damaged region extension library (development headers)
+libxdamage1:amd64 1:1.1.4-3 X11 damaged region extension library
+libxdmcp-dev:amd64 1:1.1.2-3 X11 authorisation library (development headers)
+libxdmcp6:amd64 1:1.1.2-3 X11 Display Manager Control Protocol library
+libxext-dev:amd64 2:1.3.3-1 X11 miscellaneous extensions library (development headers)
+libxext6:amd64 2:1.3.3-1 X11 miscellaneous extension library
+libxfixes-dev:amd64 1:5.0.3-1 X11 miscellaneous 'fixes' extension library (development headers)
+libxfixes3:amd64 1:5.0.3-1 X11 miscellaneous 'fixes' extension library
+libxi6:amd64 2:1.7.9-1 X11 Input extension library
+libxml2:amd64 2.9.4+dfsg1-6.1ubuntu1.2 GNOME XML library
+libxmlrpc-epi0:amd64 0.54.2-1.2 XML-RPC request serialisation/deserialisation library
+libxmuu1:amd64 2:1.1.2-2 X11 miscellaneous micro-utility library
+libxpm4:amd64 1:3.5.12-1 X11 pixmap library
+libxrender1:amd64 1:0.9.10-1 X Rendering Extension client library
+libxshmfence-dev:amd64 1.3-1 X shared memory fences - development files
+libxshmfence1:amd64 1.3-1 X shared memory fences - shared library
+libxslt1.1:amd64 1.1.29-5ubuntu0.1 XSLT 1.0 processing library - runtime library
+libxt6:amd64 1:1.1.5-1 X11 toolkit intrinsics library
+libxtables12:amd64 1.6.1-2ubuntu2 netfilter xtables library
+libxxf86vm-dev:amd64 1:1.1.4-1 X11 XFree86 video mode extension library (development headers)
+libxxf86vm1:amd64 1:1.1.4-1 X11 XFree86 video mode extension library
+libyajl2:amd64 2.1.0-2build1 Yet Another JSON Library
+libyaml-0-2:amd64 0.1.7-2ubuntu3 Fast YAML 1.1 parser and emitter library
+libzip4:amd64 1.5.1-4+ubuntu18.04.1+deb.sury.org+2 library for reading, creating, and modifying zip archives (runtime)
+libzstd1:amd64 1.3.3+dfsg-2ubuntu1 fast lossless compression algorithm
+linux-base 4.5ubuntu1 Linux image base package
+linux-firmware 1.173.6 Firmware for Linux kernel drivers
+linux-generic 4.15.0.54.56 Complete Generic Linux kernel and headers
+linux-headers-4.15.0-54 4.15.0-54.58 Header files related to Linux kernel version 4.15.0
+linux-headers-4.15.0-54-generic 4.15.0-54.58 Linux kernel headers for version 4.15.0 on 64 bit x86 SMP
+linux-headers-generic 4.15.0.54.56 Generic Linux kernel headers
+linux-image-4.15.0-54-generic 4.15.0-54.58 Signed kernel image generic
+linux-image-generic 4.15.0.54.56 Generic Linux kernel image
+linux-libc-dev:amd64 4.15.0-54.58 Linux Kernel Headers for development
+linux-modules-4.15.0-54-generic 4.15.0-54.58 Linux kernel extra modules for version 4.15.0 on 64 bit x86 SMP
+linux-modules-extra-4.15.0-54-generic 4.15.0-54.58 Linux kernel extra modules for version 4.15.0 on 64 bit x86 SMP
+locales 2.27-3ubuntu1 GNU C Library: National Language (locale) data [support]
+login 1:4.5-1ubuntu2 system login tools
+logrotate 3.11.0-0.1ubuntu1 Log rotation utility
+lsb-base 9.20170808ubuntu1 Linux Standard Base init script functionality
+lsb-release 9.20170808ubuntu1 Linux Standard Base version reporting utility
+lshw 02.18-0.1ubuntu6.18.04.1 information about hardware configuration
+lsof 4.89+dfsg-0.1 Utility to list open files
+ltrace 0.7.3-6ubuntu1 Tracks runtime library calls in dynamically linked programs
+lua50 5.0.3-8 Small embeddable language with simple procedural syntax
+make 4.1-9.1ubuntu1 utility for directing compilation
+man-db 2.8.3-2ubuntu0.1 on-line manual pager
+manpages 4.15-1 Manual pages about using a GNU/Linux system
+manpages-dev 4.15-1 Manual pages about using GNU/Linux for development
+mariadb-client-10.1 1:10.1.40-0ubuntu0.18.04.1 MariaDB database client binaries
+mariadb-client-core-10.1 1:10.1.40-0ubuntu0.18.04.1 MariaDB database core client binaries
+mariadb-common 1:10.1.40-0ubuntu0.18.04.1 MariaDB common metapackage
+mariadb-server 1:10.1.40-0ubuntu0.18.04.1 MariaDB database server (metapackage depending on the latest version)
+mariadb-server-10.1 1:10.1.40-0ubuntu0.18.04.1 MariaDB database server binaries
+mariadb-server-core-10.1 1:10.1.40-0ubuntu0.18.04.1 MariaDB database core server files
+mawk 1.3.3-17ubuntu3 a pattern scanning and text processing language
+mesa-common-dev:amd64 18.2.8-0ubuntu0~18.04.2 Developer documentation for Mesa
+mime-support 3.60ubuntu1 MIME files 'mime.types' & 'mailcap', and support programs
+mlocate 0.26-2ubuntu3.1 quickly find files on the filesystem based on their name
+modsecurity-crs 3.0.2-1 OWASP ModSecurity Core Rule Set
+mount 2.31.1-0.4ubuntu3.3 tools for mounting and manipulating filesystems
+mtr-tiny 0.92-1 Full screen ncurses traceroute tool
+multiarch-support 2.27-3ubuntu1 Transitional package to ensure multiarch compatibility
+mysql-common 5.8+1.0.4 MySQL database common files, e.g. /etc/mysql/my.cnf
+nano 2.9.3-2 small, friendly text editor inspired by Pico
+ncurses-base 6.1-1ubuntu1.18.04 basic terminal type definitions
+ncurses-bin 6.1-1ubuntu1.18.04 terminal-related programs and man pages
+ncurses-term 6.1-1ubuntu1.18.04 additional terminal type definitions
+net-tools 1.60+git20161116.90da8a0-1ubuntu1 NET-3 networking toolkit
+netbase 5.4 Basic TCP/IP networking system
+netcat-openbsd 1.187-1ubuntu0.1 TCP/IP swiss army knife
+netplan.io 0.97-0ubuntu1~18.04.1 YAML network configuration abstraction for various backends
+nettle-dev:amd64 3.4-1 low level cryptographic library (development files)
+networkd-dispatcher 1.7-0ubuntu3.3 Dispatcher service for systemd-networkd connection status changes
+nplan 0.97-0ubuntu1~18.04.1 YAML network configuration abstraction - transitional package
+ntfs-3g 1:2017.3.23-2ubuntu0.18.04.2 read/write NTFS driver for FUSE
+openssh-client 1:7.6p1-4ubuntu0.3 secure shell (SSH) client, for secure access to remote machines
+openssh-server 1:7.6p1-4ubuntu0.3 secure shell (SSH) server, for secure access from remote machines
+openssh-sftp-server 1:7.6p1-4ubuntu0.3 secure shell (SSH) sftp server module, for SFTP access from remote machines
+openssl 1.1.1-1ubuntu2.1~18.04.3 Secure Sockets Layer toolkit - cryptographic utility
+os-prober 1.74ubuntu1 utility to detect other OSes on a set of drives
+parted 3.2-20ubuntu0.2 disk partition manipulator
+passwd 1:4.5-1ubuntu2 change and administer password and group data
+patch 2.7.6-2ubuntu1 Apply a diff file to an original
+pciutils 1:3.5.2-1ubuntu1.1 Linux PCI Utilities
+perl 5.26.1-6ubuntu0.3 Larry Wall's Practical Extraction and Report Language
+perl-base 5.26.1-6ubuntu0.3 minimal Perl system
+perl-modules-5.26 5.26.1-6ubuntu0.3 Core Perl modules
+php-cli 2:7.3+69+ubuntu18.04.1+deb.sury.org+2+php7.3 command-line interpreter for the PHP scripting language (default)
+php-common 2:69+ubuntu18.04.1+deb.sury.org+2+php7.3 Common files for PHP packages
+php-date 1.4.7-3 Generic date/time handling class for PEAR
+php-db 1.9.2-2ubuntu1 Database Abstraction Layer
+php-fpm 2:7.3+69+ubuntu18.04.1+deb.sury.org+2+php7.3 server-side, HTML-embedded scripting language (FPM-CGI binary) (default)
+php-imagick 3.4.3-4+ubuntu18.04.1+deb.sury.org+1 Provides a wrapper to the ImageMagick library
+php-ldap 2:7.3+69+ubuntu18.04.1+deb.sury.org+2+php7.3 LDAP module for PHP [default]
+php-mbstring 2:7.3+69+ubuntu18.04.1+deb.sury.org+2+php7.3 MBSTRING module for PHP [default]
+php-pear 1:1.10.8+submodules+notgz-1+ubuntu18.04.1+deb.sury.org+1 PEAR Base System
+php-xml 2:7.3+69+ubuntu18.04.1+deb.sury.org+2+php7.3 DOM, SimpleXML, WDDX, XML, and XSL module for PHP [default]
+php7.1 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 server-side, HTML-embedded scripting language (metapackage)
+php7.1-cli 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 command-line interpreter for the PHP scripting language
+php7.1-common 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 documentation, examples and common module for PHP
+php7.1-curl 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 CURL module for PHP
+php7.1-fpm 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 server-side, HTML-embedded scripting language (FPM-CGI binary)
+php7.1-gd 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 GD module for PHP
+php7.1-intl 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 Internationalisation module for PHP
+php7.1-json 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 JSON module for PHP
+php7.1-ldap 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 LDAP module for PHP
+php7.1-mbstring 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 MBSTRING module for PHP
+php7.1-mcrypt 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 libmcrypt module for PHP
+php7.1-mysql 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 MySQL module for PHP
+php7.1-opcache 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 Zend OpCache module for PHP
+php7.1-readline 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 readline module for PHP
+php7.1-snmp 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 SNMP module for PHP
+php7.1-sqlite3 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 SQLite3 module for PHP
+php7.1-xml 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 DOM, SimpleXML, WDDX, XML, and XSL module for PHP
+php7.1-zip 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 Zip module for PHP
+php7.3 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 server-side, HTML-embedded scripting language (metapackage)
+php7.3-cli 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 command-line interpreter for the PHP scripting language
+php7.3-common 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 documentation, examples and common module for PHP
+php7.3-fpm 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 server-side, HTML-embedded scripting language (FPM-CGI binary)
+php7.3-gd 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 GD module for PHP
+php7.3-intl 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 Internationalisation module for PHP
+php7.3-json 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 JSON module for PHP
+php7.3-ldap 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 LDAP module for PHP
+php7.3-mbstring 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 MBSTRING module for PHP
+php7.3-mysql 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 MySQL module for PHP
+php7.3-opcache 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 Zend OpCache module for PHP
+php7.3-readline 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 readline module for PHP
+php7.3-recode 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 recode module for PHP
+php7.3-sqlite3 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 SQLite3 module for PHP
+php7.3-tidy 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 tidy module for PHP
+php7.3-xml 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 DOM, SimpleXML, WDDX, XML, and XSL module for PHP
+php7.3-xmlrpc 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 XMLRPC-EPI module for PHP
+pinentry-curses 1.1.0-1 curses-based PIN or pass-phrase entry dialog for GnuPG
+pkg-config 0.29.1-0ubuntu2 manage compile and link flags for libraries
+plymouth 0.9.3-1ubuntu7.18.04.2 boot animation, logger and I/O multiplexer
+plymouth-theme-ubuntu-text 0.9.3-1ubuntu7.18.04.2 boot animation, logger and I/O multiplexer - ubuntu text theme
+poppler-data 0.4.8-2 encoding data for the poppler PDF rendering library
+popularity-contest 1.66ubuntu1 Vote for your favourite packages automatically
+postfix 3.3.0-1ubuntu0.2 High-performance mail transport agent
+powermgmt-base 1.33 common utils for power management
+procps 2:3.3.12-3ubuntu1.1 /proc file system utilities
+psmisc 23.1-1ubuntu0.1 utilities that use the proc file system
+publicsuffix 20180223.1310-1 accurate, machine-readable list of domain name suffixes
+python 2.7.15~rc1-1 interactive high-level object-oriented language (default version)
+python-all 2.7.15~rc1-1 package depending on all supported Python runtime versions
+python-all-dev 2.7.15~rc1-1 package depending on all supported Python development packages
+python-apt-common 1.6.4 Python interface to libapt-pkg (locales)
+python-asn1crypto 0.24.0-1 Fast ASN.1 parser and serializer (Python 2)
+python-cffi-backend 1.11.5-1 Foreign Function Interface for Python calling C code - backend
+python-crypto 2.6.1-8ubuntu2 cryptographic algorithms and protocols for Python
+python-cryptography 2.1.4-1ubuntu1.3 Python library exposing cryptographic recipes and primitives (Python 2)
+python-dbus 1.2.6-1 simple interprocess messaging system (Python interface)
+python-dev 2.7.15~rc1-1 header files and a static library for Python (default)
+python-enum34 1.1.6-2 backport of Python 3.4's enum package
+python-gi 3.26.1-2ubuntu1 Python 2.x bindings for gobject-introspection libraries
+python-idna 2.6-1 Python IDNA2008 (RFC 5891) handling (Python 2)
+python-ipaddress 1.0.17-1 Backport of Python 3 ipaddress module (Python 2)
+python-keyring 10.6.0-1 store and access your passwords safely
+python-keyrings.alt 3.0-1 alternate backend implementations for python-keyring
+python-libxml2 2.9.4+dfsg1-6.1ubuntu1.2 Python bindings for the GNOME XML library
+python-lzma 0.5.3-3 Python bindings for liblzma
+python-minimal 2.7.15~rc1-1 minimal subset of the Python language (default version)
+python-pip 9.0.1-2.3~ubuntu1.18.04.1 Python package installer
+python-pip-whl 9.0.1-2.3~ubuntu1.18.04.1 Python package installer
+python-pkg-resources 39.0.1-2 Package Discovery and Resource Access using pkg_resources
+python-pycurl 7.43.0.1-0.2 Python bindings to libcurl
+python-rpm 4.14.1+dfsg1-2 Python bindings for RPM
+python-secretstorage 2.3.1-2 Python module for storing secrets - Python 2.x version
+python-setuptools 39.0.1-2 Python Distutils Enhancements
+python-six 1.11.0-2 Python 2 and 3 compatibility library (Python 2 interface)
+python-sqlite 1.0.1-12 Python interface to SQLite 2
+python-sqlitecachec 1.1.4-1 Fast metadata parser for yum
+python-urlgrabber 3.10.2-1 high-level URL transfer library
+python-wheel 0.30.0-0.2 built-package format for Python
+python-xdg 0.25-4ubuntu1 Python 2 library to access freedesktop.org standards
+python2.7 2.7.15-4ubuntu4~18.04 Interactive high-level object-oriented language (version 2.7)
+python2.7-dev 2.7.15-4ubuntu4~18.04 Header files and a static library for Python (v2.7)
+python2.7-minimal 2.7.15-4ubuntu4~18.04 Minimal subset of the Python language (version 2.7)
+python3 3.6.7-1~18.04 interactive high-level object-oriented language (default python3 version)
+python3-apt 1.6.4 Python 3 interface to libapt-pkg
+python3-certifi 2018.1.18-2 root certificates for validating SSL certs and verifying TLS hosts (python3)
+python3-chardet 3.0.4-1 universal character encoding detector for Python3
+python3-commandnotfound 18.04.5 Python 3 bindings for command-not-found.
+python3-dbus 1.2.6-1 simple interprocess messaging system (Python 3 interface)
+python3-distro-info 0.18ubuntu0.18.04.1 information about distributions' releases (Python 3 module)
+python3-distupgrade 1:18.04.34 manage release upgrades
+python3-gdbm:amd64 3.6.8-1~18.04 GNU dbm database support for Python 3.x
+python3-gi 3.26.1-2ubuntu1 Python 3 bindings for gobject-introspection libraries
+python3-idna 2.6-1 Python IDNA2008 (RFC 5891) handling (Python 3)
+python3-minimal 3.6.7-1~18.04 minimal subset of the Python language (default python3 version)
+python3-netifaces 0.10.4-0.1build4 portable network interface information - Python 3.x
+python3-pkg-resources 39.0.1-2 Package Discovery and Resource Access using pkg_resources
+python3-requests 2.18.4-2ubuntu0.1 elegant and simple HTTP library for Python3, built for human beings
+python3-six 1.11.0-2 Python 2 and 3 compatibility library (Python 3 interface)
+python3-software-properties 0.96.24.32.9 manage the repositories that you install software from
+python3-update-manager 1:18.04.11.10 python 3.x module for update-manager
+python3-urllib3 1.22-1ubuntu0.18.04.1 HTTP library with thread-safe connection pooling for Python3
+python3-yaml 3.12-1build2 YAML parser and emitter for Python3
+python3.6 3.6.8-1~18.04.1 Interactive high-level object-oriented language (version 3.6)
+python3.6-minimal 3.6.8-1~18.04.1 Minimal subset of the Python language (version 3.6)
+qdbus 4:4.8.7+dfsg-7ubuntu1 Qt 4 D-Bus tool
+qt-at-spi:amd64 0.4.0-8 at-spi accessibility plugin for Qt
+qt4-linguist-tools 4:4.8.7+dfsg-7ubuntu1 Qt 4 Linguist tools
+qt4-qmake 4:4.8.7+dfsg-7ubuntu1 Qt 4 qmake Makefile generator tool
+qtchooser 64-ga1b6736-5 Wrapper to select between Qt development binary versions
+qtcore4-l10n 4:4.8.7+dfsg-7ubuntu1 Qt 4 core module translations
+readline-common 7.0-3 GNU readline and history libraries, common files
+rpm 4.14.1+dfsg1-2 package manager for RPM
+rpm-common 4.14.1+dfsg1-2 common files for RPM
+rpm2cpio 4.14.1+dfsg1-2 tool to convert RPM package to CPIO archive
+rrdtool 1.7.0-1build1 time-series data storage and display system (programs)
+rsync 3.1.2-2.1ubuntu1 fast, versatile, remote (and local) file-copying tool
+rsyslog 8.32.0-1ubuntu4 reliable system and kernel logging daemon
+sed 4.4-2 GNU stream editor for filtering/transforming text
+sensible-utils 0.0.12 Utilities for sensible alternative selection
+shared-mime-info 1.9-2 FreeDesktop.org shared MIME database and spec
+smistrip 0.4.8+dfsg2-15 extract MIB from text files like RFC
+snmp 5.7.3+dfsg-1.8ubuntu3.1 SNMP (Simple Network Management Protocol) applications
+snmp-mibs-downloader 1.1+nmu1 Install and manage Management Information Base (MIB) files
+snmpd 5.7.3+dfsg-1.8ubuntu3.1 SNMP (Simple Network Management Protocol) agents
+socat 1.7.3.2-2ubuntu2 multipurpose relay for bidirectional data transfer
+software-properties-common 0.96.24.32.9 manage the repositories that you install software from (common)
+ssh-import-id 5.7-0ubuntu1.1 securely retrieve an SSH public key and install it locally
+ssl-cert 1.0.39 simple debconf wrapper for OpenSSL
+strace 4.21-1ubuntu1 System call tracer
+sudo 1.8.21p2-3ubuntu1 Provide limited super user privileges to specific users
+systemd 237-3ubuntu10.23 system and service manager
+systemd-sysv 237-3ubuntu10.23 system and service manager - SysV links
+sysvinit-utils 2.88dsf-59.10ubuntu1 System-V-like utilities
+tar 1.29b-2ubuntu0.1 GNU version of the tar archiving utility
+tasksel 3.34ubuntu11 tool for selecting tasks for installation on Debian systems
+tasksel-data 3.34ubuntu11 official tasks used for installation of Debian systems
+tcpdump 4.9.2-3 command-line network traffic analyzer
+telnet 0.17-41 basic telnet client
+time 1.7-25.1build1 GNU time program for measuring CPU resource usage
+tofrodos 1.7.13+ds-3 Converts DOS <-> Unix text files, alias tofromdos
+ttf-dejavu-core 2.37-1 transitional dummy package
+tzdata 2019a-0ubuntu0.18.04 time zone and daylight-saving time data
+ubuntu-advantage-tools 17 management tools for Ubuntu Advantage
+ubuntu-keyring 2018.09.18.1~18.04.0 GnuPG keys of the Ubuntu archive
+ubuntu-minimal 1.417.1 Minimal core of Ubuntu
+ubuntu-release-upgrader-core 1:18.04.34 manage release upgrades
+ubuntu-standard 1.417.1 The Ubuntu standard system
+ucf 3.0038 Update Configuration File(s): preserve user changes to config files
+udev 237-3ubuntu10.23 /dev/ and hotplug management daemon
+ufw 0.36-0ubuntu0.18.04.1 program for managing a Netfilter firewall
+unattended-upgrades 1.1ubuntu1.18.04.11 automatic installation of security upgrades
+unzip 6.0-21ubuntu1 De-archiver for .zip files
+update-manager-core 1:18.04.11.10 manage release upgrades
+ureadahead 0.100.0-21 Read required files in advance
+usbutils 1:007-4build1 Linux USB utilities
+util-linux 2.31.1-0.4ubuntu3.3 miscellaneous system utilities
+uuid-runtime 2.31.1-0.4ubuntu3.3 runtime components for the Universally Unique ID library
+vim-common 2:8.0.1453-1ubuntu1.1 Vi IMproved - Common files
+vim-tiny 2:8.0.1453-1ubuntu1.1 Vi IMproved - enhanced vi editor - compact version
+wget 1.19.4-1ubuntu2.2 retrieves files from the web
+whiptail 0.52.20-1ubuntu1 Displays user-friendly dialog boxes from shell scripts
+wireless-regdb 2018.05.09-0ubuntu1~18.04.1 wireless regulatory database
+x11-common 1:7.7+19ubuntu7.1 X Window System (X.Org) infrastructure
+x11proto-core-dev 2018.4-4 transitional dummy package
+x11proto-damage-dev 1:2018.4-4 transitional dummy package
+x11proto-dev 2018.4-4 X11 extension protocols and auxiliary headers
+x11proto-fixes-dev 1:2018.4-4 transitional dummy package
+x11proto-xext-dev 2018.4-4 transitional dummy package
+x11proto-xf86vidmode-dev 2018.4-4 transitional dummy package
+xauth 1:1.0.10-1 X authentication utility
+xdg-user-dirs 0.17-1ubuntu1 tool to manage well known user directories
+xkb-data 2.23.1-1ubuntu1 X Keyboard Extension (XKB) configuration data
+xorg-sgml-doctools 1:1.11-1 Common tools for building X.Org SGML documentation
+xtrans-dev 1.3.5-1 X transport library (development files)
+xxd 2:8.0.1453-1ubuntu1.1 tool to make (or reverse) a hex dump
+xz-utils 5.2.2-1.3 XZ-format compression utilities
+yum 3.4.3-3 Advanced front-end for rpm
+zip 3.0-11build1 Archiver for .zip files
+zlib1g:amd64 1:1.2.11.dfsg-0ubuntu2 compression library - runtime
+zlib1g-dev:amd64 1:1.2.11.dfsg-0ubuntu2 compression library - development
+
+[+] Current processes
+USER PID START TIME COMMAND
+root 1 09:28 0:02 /sbin/init
+root 2 09:28 0:00 [kthreadd]
+root 4 09:28 0:00 [kworker/0:0H]
+root 6 09:28 0:00 [mm_percpu_wq]
+root 7 09:28 0:35 [ksoftirqd/0]
+root 8 09:28 0:06 [rcu_sched]
+root 9 09:28 0:00 [rcu_bh]
+root 10 09:28 0:00 [migration/0]
+root 11 09:28 0:00 [watchdog/0]
+root 12 09:28 0:00 [cpuhp/0]
+root 13 09:28 0:00 [kdevtmpfs]
+root 14 09:28 0:00 [netns]
+root 15 09:28 0:00 [rcu_tasks_kthre]
+root 16 09:28 0:00 [kauditd]
+root 17 09:28 0:00 [khungtaskd]
+root 18 09:28 0:00 [oom_reaper]
+root 19 09:28 0:00 [writeback]
+root 20 09:28 0:00 [kcompactd0]
+root 21 09:28 0:00 [ksmd]
+root 22 09:28 0:00 [khugepaged]
+root 23 09:28 0:00 [crypto]
+root 24 09:28 0:00 [kintegrityd]
+root 25 09:28 0:00 [kblockd]
+root 26 09:28 0:00 [ata_sff]
+root 27 09:28 0:00 [md]
+root 28 09:28 0:00 [edac-poller]
+root 29 09:28 0:00 [devfreq_wq]
+root 30 09:28 0:00 [watchdogd]
+root 32 09:28 0:01 [kworker/0:1]
+root 34 09:28 0:00 [kswapd0]
+root 35 09:28 0:00 [kworker/u257:0]
+root 36 09:28 0:00 [ecryptfs-kthrea]
+root 78 09:28 0:00 [kthrotld]
+root 79 09:28 0:00 [acpi_thermal_pm]
+root 80 09:28 0:00 [scsi_eh_0]
+root 81 09:28 0:00 [scsi_tmf_0]
+root 82 09:28 0:00 [scsi_eh_1]
+root 83 09:28 0:00 [scsi_tmf_1]
+root 85 09:28 0:00 [kworker/u256:3]
+root 86 09:28 0:00 [kworker/0:2]
+root 90 09:28 0:00 [ipv6_addrconf]
+root 99 09:28 0:00 [kstrp]
+root 116 09:28 0:00 [charger_manager]
+root 166 09:28 0:00 [mpt_poll_0]
+root 167 09:28 0:00 [mpt/0]
+root 168 09:28 0:00 [kworker/0:1H]
+root 169 09:28 0:00 [scsi_eh_2]
+root 170 09:28 0:00 [scsi_tmf_2]
+root 191 09:28 0:00 [jbd2/sda1-8]
+root 192 09:28 0:00 [ext4-rsv-conver]
+root 230 09:28 0:00 /lib/systemd/systemd-journald
+root 250 09:28 0:00 /lib/systemd/systemd-udevd
+root 289 09:28 0:00 [ttm_swap]
+root 290 09:28 0:00 [irq/16-vmwgfx]
+systemd+ 416 09:29 0:00 /lib/systemd/systemd-timesyncd
+systemd+ 417 09:29 0:00 /lib/systemd/systemd-resolved
+root 480 09:29 0:00 /lib/systemd/systemd-logind
+message+ 485 09:29 0:00 /usr/bin/dbus-daemon
+root 490 09:29 0:00 /usr/sbin/cron
+root 491 09:29 0:00 /usr/lib/accountsservice/accounts-daemon
+syslog 500 09:29 0:00 /usr/sbin/rsyslogd
+root 502 09:29 0:00 /usr/bin/python3
+root 706 09:29 0:00 php-fpm:
+root 707 09:29 0:00 php-fpm:
+root 709 09:29 0:00 /usr/bin/python3
+Debian-+ 718 09:29 0:01 /usr/sbin/snmpd
+root 734 09:29 0:00 /sbin/agetty
+root 789 09:29 0:00 /usr/sbin/sshd
+mysql 810 09:29 0:41 /usr/sbin/mysqld
+root 826 09:29 0:04 /usr/sbin/apache2
+www-data 833 09:29 0:00 php-fpm:
+www-data 834 09:29 0:00 php-fpm:
+www-data 835 09:29 0:00 php-fpm:
+www-data 836 09:29 0:00 php-fpm:
+root 932 09:29 0:02 /usr/sbin/vmtoolsd
+root 993 09:29 0:00 /usr/lib/vmware-vgauth/VGAuthService
+centreon 1030 09:29 0:00 /usr/bin/perl
+www-data 11016 10:01 0:03 /usr/sbin/apache2
+www-data 14115 10:05 0:02 /usr/sbin/apache2
+www-data 14137 10:06 0:02 /usr/sbin/apache2
+www-data 14139 10:06 0:02 /usr/sbin/apache2
+www-data 14178 10:07 0:02 /usr/sbin/apache2
+www-data 14229 10:08 0:02 /usr/sbin/apache2
+www-data 14297 10:08 0:02 /usr/sbin/apache2
+www-data 14302 10:08 0:01 /usr/sbin/apache2
+www-data 14304 10:08 0:01 /usr/sbin/apache2
+www-data 14670 10:08 0:01 /usr/sbin/apache2
+www-data 14708 10:08 0:01 /usr/sbin/apache2
+www-data 14710 10:08 0:01 /usr/sbin/apache2
+www-data 14864 10:08 0:01 /usr/sbin/apache2
+www-data 14868 10:08 0:01 /usr/sbin/apache2
+www-data 15195 10:08 0:02 /usr/sbin/apache2
+root 15786 10:09 0:00 [kworker/u256:1]
+www-data 15904 10:09 0:01 /usr/sbin/apache2
+www-data 15999 10:09 0:01 /usr/sbin/apache2
+www-data 16193 10:09 0:01 /usr/sbin/apache2
+www-data 17032 10:09 0:01 /usr/sbin/apache2
+www-data 17100 10:09 0:01 /usr/sbin/apache2
+www-data 17796 10:10 0:01 [apache2]
+www-data 17822 10:10 0:01 /usr/sbin/apache2
+www-data 18328 10:10 0:01 /usr/sbin/apache2
+www-data 18462 10:10 0:01 /usr/sbin/apache2
+www-data 18493 10:10 0:01 /usr/sbin/apache2
+www-data 18680 10:11 0:01 /usr/sbin/apache2
+www-data 18715 10:11 0:01 /usr/sbin/apache2
+www-data 18720 10:11 0:01 /usr/sbin/apache2
+www-data 18768 10:11 0:01 /usr/sbin/apache2
+www-data 19026 10:11 0:01 /usr/sbin/apache2
+www-data 19144 10:11 0:00 /usr/sbin/apache2
+www-data 19145 10:11 0:00 /usr/sbin/apache2
+www-data 19146 10:11 0:01 /usr/sbin/apache2
+www-data 19161 10:11 0:00 /usr/sbin/apache2
+www-data 19162 10:11 0:00 /usr/sbin/apache2
+www-data 19166 10:11 0:00 /usr/sbin/apache2
+www-data 19167 10:11 0:01 /usr/sbin/apache2
+www-data 19168 10:11 0:00 /usr/sbin/apache2
+www-data 19169 10:11 0:00 /usr/sbin/apache2
+www-data 19170 10:11 0:00 /usr/sbin/apache2
+www-data 19171 10:11 0:00 /usr/sbin/apache2
+www-data 19172 10:11 0:00 /usr/sbin/apache2
+www-data 19173 10:11 0:00 /usr/sbin/apache2
+www-data 19603 10:11 0:00 /usr/sbin/apache2
+www-data 19651 10:11 0:00 /usr/sbin/apache2
+www-data 19817 10:12 0:00 /usr/sbin/apache2
+www-data 19852 10:12 0:00 /usr/sbin/apache2
+www-data 19894 10:12 0:00 /usr/sbin/apache2
+www-data 19930 10:12 0:00 /usr/sbin/apache2
+www-data 19931 10:12 0:00 /usr/sbin/apache2
+www-data 19932 10:12 0:00 /usr/sbin/apache2
+www-data 19934 10:12 0:00 /usr/sbin/apache2
+www-data 19935 10:12 0:00 /usr/sbin/apache2
+www-data 20224 10:12 0:00 /usr/sbin/apache2
+www-data 20294 10:12 0:00 /usr/sbin/apache2
+www-data 20295 10:12 0:00 /usr/sbin/apache2
+www-data 20390 10:12 0:00 /usr/sbin/apache2
+www-data 20537 10:12 0:00 /usr/sbin/apache2
+www-data 20606 10:12 0:00 /usr/sbin/apache2
+www-data 20642 10:12 0:00 /usr/sbin/apache2
+www-data 20989 10:12 0:00 /usr/sbin/apache2
+www-data 21017 10:12 0:00 /usr/sbin/apache2
+www-data 21118 10:12 0:00 /usr/sbin/apache2
+www-data 21151 10:12 0:00 /usr/sbin/apache2
+www-data 21153 10:12 0:00 /usr/sbin/apache2
+www-data 21154 10:12 0:00 /usr/sbin/apache2
+www-data 21436 10:13 0:00 /usr/sbin/apache2
+www-data 21469 10:13 0:00 /usr/sbin/apache2
+www-data 21470 10:13 0:00 /usr/sbin/apache2
+www-data 21692 10:13 0:00 /usr/sbin/apache2
+www-data 21763 10:13 0:00 /usr/sbin/apache2
+www-data 21795 10:13 0:00 /usr/sbin/apache2
+www-data 21931 10:13 0:00 /usr/sbin/apache2
+www-data 21962 10:13 0:00 /usr/sbin/apache2
+www-data 21963 10:13 0:00 /usr/sbin/apache2
+www-data 22160 10:13 0:00 /usr/sbin/apache2
+www-data 22195 10:13 0:00 /usr/sbin/apache2
+www-data 22229 10:13 0:00 /usr/sbin/apache2
+www-data 22238 10:13 0:00 /usr/sbin/apache2
+www-data 22372 10:13 0:00 /usr/sbin/apache2
+www-data 22405 10:13 0:00 /usr/sbin/apache2
+www-data 22612 10:13 0:00 /usr/sbin/apache2
+www-data 22634 10:13 0:00 /usr/sbin/apache2
+www-data 22635 10:13 0:00 /usr/sbin/apache2
+www-data 22636 10:13 0:00 /usr/sbin/apache2
+www-data 22637 10:13 0:00 /usr/sbin/apache2
+www-data 22657 10:13 0:00 /usr/sbin/apache2
+www-data 22658 10:13 0:00 /usr/sbin/apache2
+www-data 22660 10:13 0:00 /usr/sbin/apache2
+www-data 22662 10:13 0:00 /usr/sbin/apache2
+www-data 22663 10:13 0:00 /usr/sbin/apache2
+www-data 22991 10:14 0:00 /usr/sbin/apache2
+www-data 22992 10:14 0:00 /usr/sbin/apache2
+www-data 23112 10:14 0:00 /usr/sbin/apache2
+www-data 23286 10:14 0:00 sh
+www-data 23287 10:14 0:00 /usr/bin/python
+www-data 23372 10:14 0:00 /usr/sbin/apache2
+www-data 23623 10:14 0:00 /bin/sh
+www-data 23624 10:14 0:00 ps
+www-data 23625 10:14 0:00 awk
+
+[+] Apache Version and Modules
+Server version: Apache/2.4.29 (Ubuntu)
+Server built: 2019-04-03T13:22:37
+Loaded Modules:
+core_module (static)
+so_module (static)
+watchdog_module (static)
+http_module (static)
+log_config_module (static)
+logio_module (static)
+version_module (static)
+unixd_module (static)
+access_compat_module (shared)
+alias_module (shared)
+auth_basic_module (shared)
+authn_core_module (shared)
+authn_file_module (shared)
+authz_core_module (shared)
+authz_host_module (shared)
+authz_user_module (shared)
+autoindex_module (shared)
+deflate_module (shared)
+dir_module (shared)
+env_module (shared)
+filter_module (shared)
+mime_module (shared)
+mpm_prefork_module (shared)
+negotiation_module (shared)
+php7_module (shared)
+proxy_module (shared)
+proxy_fcgi_module (shared)
+reqtimeout_module (shared)
+rewrite_module (shared)
+security2_module (shared)
+setenvif_module (shared)
+status_module (shared)
+unique_id_module (shared)
+Compiled in modules:
+core.c
+mod_so.c
+mod_watchdog.c
+http_core.c
+mod_log_config.c
+mod_logio.c
+mod_version.c
+mod_unixd.c
+
+[+] Apache Config File
+# This is the main Apache server configuration file. It contains the
+# configuration directives that give the server its instructions.
+# See http://httpd.apache.org/docs/2.4/ for detailed information about
+# the directives and /usr/share/doc/apache2/README.Debian about Debian specific
+# hints.
+#
+#
+# Summary of how the Apache 2 configuration works in Debian:
+# The Apache 2 web server configuration in Debian is quite different to
+# upstream's suggested way to configure the web server. This is because Debian's
+# default Apache2 installation attempts to make adding and removing modules,
+# virtual hosts, and extra configuration directives as flexible as possible, in
+# order to make automating the changes and administering the server as easy as
+# possible.
+# It is split into several files forming the configuration hierarchy outlined
+# below, all located in the /etc/apache2/ directory:
+#
+# /etc/apache2/
+# |-- apache2.conf
+# | `-- ports.conf
+# |-- mods-enabled
+# | |-- *.load
+# | `-- *.conf
+# |-- conf-enabled
+# | `-- *.conf
+# `-- sites-enabled
+# `-- *.conf
+#
+#
+# * apache2.conf is the main configuration file (this file). It puts the pieces
+# together by including all remaining configuration files when starting up the
+# web server.
+#
+# * ports.conf is always included from the main configuration file. It is
+# supposed to determine listening ports for incoming connections which can be
+# customized anytime.
+#
+# * Configuration files in the mods-enabled/, conf-enabled/ and sites-enabled/
+# directories contain particular configuration snippets which manage modules,
+# global configuration fragments, or virtual host configurations,
+# respectively.
+#
+# They are activated by symlinking available configuration files from their
+# respective *-available/ counterparts. These should be managed by using our
+# helpers a2enmod/a2dismod, a2ensite/a2dissite and a2enconf/a2disconf. See
+# their respective man pages for detailed information.
+#
+# * The binary is called apache2. Due to the use of environment variables, in
+# the default configuration, apache2 needs to be started/stopped with
+# /etc/init.d/apache2 or apache2ctl. Calling /usr/bin/apache2 directly will not
+# work with the default configuration.
+# Global configuration
+#
+#
+# ServerRoot: The top of the directory tree under which the server's
+# configuration, error, and log files are kept.
+#
+# NOTE! If you intend to place this on an NFS (or otherwise network)
+# mounted filesystem then please read the Mutex documentation (available
+# at );
+# you will save yourself a lot of trouble.
+#
+# Do NOT add a slash at the end of the directory path.
+#
+#ServerRoot "/etc/apache2"
+#
+# The accept serialization lock file MUST BE STORED ON A LOCAL DISK.
+#
+#Mutex file:${APACHE_LOCK_DIR} default
+#
+# The directory where shm and other runtime files will be stored.
+#
+DefaultRuntimeDir ${APACHE_RUN_DIR}
+#
+# PidFile: The file in which the server should record its process
+# identification number when it starts.
+# This needs to be set in /etc/apache2/envvars
+#
+PidFile ${APACHE_PID_FILE}
+#
+# Timeout: The number of seconds before receives and sends time out.
+#
+Timeout 300
+#
+# KeepAlive: Whether or not to allow persistent connections (more than
+# one request per connection). Set to "Off" to deactivate.
+#
+KeepAlive On
+#
+# MaxKeepAliveRequests: The maximum number of requests to allow
+# during a persistent connection. Set to 0 to allow an unlimited amount.
+# We recommend you leave this number high, for maximum performance.
+#
+MaxKeepAliveRequests 100
+#
+# KeepAliveTimeout: Number of seconds to wait for the next request from the
+# same client on the same connection.
+#
+KeepAliveTimeout 5
+# These need to be set in /etc/apache2/envvars
+User ${APACHE_RUN_USER}
+Group ${APACHE_RUN_GROUP}
+#
+# HostnameLookups: Log the names of clients or just their IP addresses
+# e.g., www.apache.org (on) or 204.62.129.132 (off).
+# The default is off because it'd be overall better for the net if people
+# had to knowingly turn this feature on, since enabling it means that
+# each client request will result in AT LEAST one lookup request to the
+# nameserver.
+#
+HostnameLookups Off
+# ErrorLog: The location of the error log file.
+# If you do not specify an ErrorLog directive within a
+# container, error messages relating to that virtual host will be
+# logged here. If you *do* define an error logfile for a
+# container, that host's errors will be logged there and not here.
+#
+ErrorLog ${APACHE_LOG_DIR}/error.log
+#
+# LogLevel: Control the severity of messages logged to the error_log.
+# Available values: trace8, ..., trace1, debug, info, notice, warn,
+# error, crit, alert, emerg.
+# It is also possible to configure the log level for particular modules, e.g.
+# "LogLevel info ssl:warn"
+#
+LogLevel warn
+# Include module configuration:
+IncludeOptional mods-enabled/*.load
+IncludeOptional mods-enabled/*.conf
+# Include list of ports to listen on
+Include ports.conf
+# Sets the default security model of the Apache2 HTTPD server. It does
+# not allow access to the root filesystem outside of /usr/share and /var/www.
+# The former is used by web applications packaged in Debian,
+# the latter may be used for local directories served by the web server. If
+# your system is serving content from a sub-directory in /srv you must allow
+# access here, or in any related virtual host.
+
+Options FollowSymLinks
+AllowOverride None
+Require all denied
+
+
+AllowOverride None
+Require all granted
+
+
+Options Indexes FollowSymLinks
+AllowOverride None
+Require all granted
+
+#
+# Options Indexes FollowSymLinks
+# AllowOverride None
+# Require all granted
+#
+# AccessFileName: The name of the file to look for in each directory
+# for additional configuration directives. See also the AllowOverride
+# directive.
+#
+AccessFileName .htaccess
+#
+# The following lines prevent .htaccess and .htpasswd files from being
+# viewed by Web clients.
+#
+
+Require all denied
+
+#
+# The following directives define some format nicknames for use with
+# a CustomLog directive.
+#
+# These deviate from the Common Log Format definitions in that they use %O
+# (the actual bytes sent including headers) instead of %b (the size of the
+# requested file), because the latter makes it impossible to detect partial
+# requests.
+#
+# Note that the use of %{X-Forwarded-For}i instead of %h is not recommended.
+# Use mod_remoteip instead.
+#
+LogFormat "%v:%p %h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" vhost_combined
+LogFormat "%h %l %u %t \"%r\" %>s %O \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %O" common
+LogFormat "%{Referer}i -> %U" referer
+LogFormat "%{User-agent}i" agent
+# Include of directories ignores editors' and dpkg's backup files,
+# see README.Debian for details.
+# Include generic snippets of statements
+IncludeOptional conf-enabled/*.conf
+# Include the virtual host configurations:
+IncludeOptional sites-enabled/*.conf
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
+
+[+] Sudo Version (Check out http://www.exploit-db.com/search/?action=search&filter_page=1&filter_description=sudo)
+Sudo version 1.8.21p2
+Sudoers policy plugin version 1.8.21p2
+Sudoers file grammar version 46
+Sudoers I/O plugin version 1.8.21p2
+
+[*] IDENTIFYING PROCESSES AND PACKAGES RUNNING AS ROOT OR OTHER SUPERUSER...
+
+root 13 09:28 0:00 [kdevtmpfs]
+root 2 09:28 0:00 [kthreadd]
+root 86 09:28 0:00 [kworker/0:2]
+root 17 09:28 0:00 [khungtaskd]
+root 15 09:28 0:00 [rcu_tasks_kthre]
+root 707 09:29 0:00 php-fpm:
+root 250 09:28 0:00 /lib/systemd/systemd-udevd
+root 90 09:28 0:00 [ipv6_addrconf]
+root 191 09:28 0:00 [jbd2/sda1-8]
+root 7 09:28 0:35 [ksoftirqd/0]
+root 491 09:29 0:00 /usr/lib/accountsservice/accounts-daemon
+root 14 09:28 0:00 [netns]
+root 36 09:28 0:00 [ecryptfs-kthrea]
+root 26 09:28 0:00 [ata_sff]
+root 706 09:29 0:00 php-fpm:
+root 81 09:28 0:00 [scsi_tmf_0]
+root 82 09:28 0:00 [scsi_eh_1]
+root 34 09:28 0:00 [kswapd0]
+root 78 09:28 0:00 [kthrotld]
+root 6 09:28 0:00 [mm_percpu_wq]
+root 24 09:28 0:00 [kintegrityd]
+root 734 09:29 0:00 /sbin/agetty
+root 15786 10:09 0:00 [kworker/u256:1]
+root 168 09:28 0:00 [kworker/0:1H]
+root 826 09:29 0:04 /usr/sbin/apache2
+Possible Related Packages:
+apache2 2.4.29-1ubuntu4.6 Apache HTTP Server
+apache2-bin 2.4.29-1ubuntu4.6 Apache HTTP Server (modules and other binary files)
+apache2-data 2.4.29-1ubuntu4.6 Apache HTTP Server (common files)
+apache2-utils 2.4.29-1ubuntu4.6 Apache HTTP Server (utility programs for web servers)
+libapache2-mod-php7.1 7.1.30-1+ubuntu18.04.1+deb.sury.org+1 server-side, HTML-embedded scripting language (Apache 2 module)
+libapache2-mod-php7.3 7.3.6-1+ubuntu18.04.1+deb.sury.org+1 server-side, HTML-embedded scripting language (Apache 2 module)
+libapache2-mod-security2 2.9.2-1 Tighten web applications security for Apache
+root 11 09:28 0:00 [watchdog/0]
+root 25 09:28 0:00 [kblockd]
+root 83 09:28 0:00 [scsi_tmf_1]
+root 1 09:28 0:02 /sbin/init
+Possible Related Packages:
+busybox-initramfs 1:1.27.2-2ubuntu3.2 Standalone shell setup for initramfs
+init 1.51 metapackage ensuring an init system is installed
+init-system-helpers 1.51 helper tools for all init systems
+initramfs-tools 0.130ubuntu3.8 generic modular initramfs generator (automation)
+initramfs-tools-bin 0.130ubuntu3.8 binaries used by initramfs-tools
+initramfs-tools-core 0.130ubuntu3.8 generic modular initramfs generator (core tools)
+libklibc 2.0.4-9ubuntu2 minimal libc subset for use with initramfs
+lsb-base 9.20170808ubuntu1 Linux Standard Base init script functionality
+ncurses-base 6.1-1ubuntu1.18.04 basic terminal type definitions
+ncurses-term 6.1-1ubuntu1.18.04 additional terminal type definitions
+sysvinit-utils 2.88dsf-59.10ubuntu1 System-V-like utilities
+root 192 09:28 0:00 [ext4-rsv-conver]
+root 27 09:28 0:00 [md]
+root 289 09:28 0:00 [ttm_swap]
+root 18 09:28 0:00 [oom_reaper]
+root 169 09:28 0:00 [scsi_eh_2]
+root 85 09:28 0:00 [kworker/u256:3]
+root 28 09:28 0:00 [edac-poller]
+root 20 09:28 0:00 [kcompactd0]
+root 12 09:28 0:00 [cpuhp/0]
+root 32 09:28 0:01 [kworker/0:1]
+root 789 09:29 0:00 /usr/sbin/sshd
+root 4 09:28 0:00 [kworker/0:0H]
+root 167 09:28 0:00 [mpt/0]
+root 80 09:28 0:00 [scsi_eh_0]
+root 99 09:28 0:00 [kstrp]
+root 170 09:28 0:00 [scsi_tmf_2]
+root 10 09:28 0:00 [migration/0]
+root 116 09:28 0:00 [charger_manager]
+root 79 09:28 0:00 [acpi_thermal_pm]
+root 35 09:28 0:00 [kworker/u257:0]
+root 230 09:28 0:00 /lib/systemd/systemd-journald
+root 8 09:28 0:06 [rcu_sched]
+root 993 09:29 0:00 /usr/lib/vmware-vgauth/VGAuthService
+root 490 09:29 0:00 /usr/sbin/cron
+Possible Related Packages:
+cron 3.0pl1-128.1ubuntu1 process scheduling daemon
+root 290 09:28 0:00 [irq/16-vmwgfx]
+root 23 09:28 0:00 [crypto]
+root 480 09:29 0:00 /lib/systemd/systemd-logind
+root 21 09:28 0:00 [ksmd]
+root 932 09:29 0:02 /usr/sbin/vmtoolsd
+root 30 09:28 0:00 [watchdogd]
+root 502 09:29 0:00 /usr/bin/python3
+Possible Related Packages:
+libpython3-stdlib:amd64 3.6.7-1~18.04 interactive high-level object-oriented language (default python3 version)
+libpython3.6-minimal:amd64 3.6.8-1~18.04.1 Minimal subset of the Python language (version 3.6)
+libpython3.6-stdlib:amd64 3.6.8-1~18.04.1 Interactive high-level object-oriented language (standard library, version 3.6)
+python3 3.6.7-1~18.04 interactive high-level object-oriented language (default python3 version)
+python3-apt 1.6.4 Python 3 interface to libapt-pkg
+python3-certifi 2018.1.18-2 root certificates for validating SSL certs and verifying TLS hosts (python3)
+python3-chardet 3.0.4-1 universal character encoding detector for Python3
+python3-commandnotfound 18.04.5 Python 3 bindings for command-not-found.
+python3-dbus 1.2.6-1 simple interprocess messaging system (Python 3 interface)
+python3-distro-info 0.18ubuntu0.18.04.1 information about distributions' releases (Python 3 module)
+python3-distupgrade 1:18.04.34 manage release upgrades
+python3-gdbm:amd64 3.6.8-1~18.04 GNU dbm database support for Python 3.x
+python3-gi 3.26.1-2ubuntu1 Python 3 bindings for gobject-introspection libraries
+python3-idna 2.6-1 Python IDNA2008 (RFC 5891) handling (Python 3)
+python3-minimal 3.6.7-1~18.04 minimal subset of the Python language (default python3 version)
+python3-netifaces 0.10.4-0.1build4 portable network interface information - Python 3.x
+python3-pkg-resources 39.0.1-2 Package Discovery and Resource Access using pkg_resources
+python3-requests 2.18.4-2ubuntu0.1 elegant and simple HTTP library for Python3, built for human beings
+python3-six 1.11.0-2 Python 2 and 3 compatibility library (Python 3 interface)
+python3-software-properties 0.96.24.32.9 manage the repositories that you install software from
+python3-update-manager 1:18.04.11.10 python 3.x module for update-manager
+python3-urllib3 1.22-1ubuntu0.18.04.1 HTTP library with thread-safe connection pooling for Python3
+python3-yaml 3.12-1build2 YAML parser and emitter for Python3
+python3.6 3.6.8-1~18.04.1 Interactive high-level object-oriented language (version 3.6)
+python3.6-minimal 3.6.8-1~18.04.1 Minimal subset of the Python language (version 3.6)
+root 22 09:28 0:00 [khugepaged]
+root 19 09:28 0:00 [writeback]
+root 709 09:29 0:00 /usr/bin/python3
+Possible Related Packages:
+libpython3-stdlib:amd64 3.6.7-1~18.04 interactive high-level object-oriented language (default python3 version)
+libpython3.6-minimal:amd64 3.6.8-1~18.04.1 Minimal subset of the Python language (version 3.6)
+libpython3.6-stdlib:amd64 3.6.8-1~18.04.1 Interactive high-level object-oriented language (standard library, version 3.6)
+python3 3.6.7-1~18.04 interactive high-level object-oriented language (default python3 version)
+python3-apt 1.6.4 Python 3 interface to libapt-pkg
+python3-certifi 2018.1.18-2 root certificates for validating SSL certs and verifying TLS hosts (python3)
+python3-chardet 3.0.4-1 universal character encoding detector for Python3
+python3-commandnotfound 18.04.5 Python 3 bindings for command-not-found.
+python3-dbus 1.2.6-1 simple interprocess messaging system (Python 3 interface)
+python3-distro-info 0.18ubuntu0.18.04.1 information about distributions' releases (Python 3 module)
+python3-distupgrade 1:18.04.34 manage release upgrades
+python3-gdbm:amd64 3.6.8-1~18.04 GNU dbm database support for Python 3.x
+python3-gi 3.26.1-2ubuntu1 Python 3 bindings for gobject-introspection libraries
+python3-idna 2.6-1 Python IDNA2008 (RFC 5891) handling (Python 3)
+python3-minimal 3.6.7-1~18.04 minimal subset of the Python language (default python3 version)
+python3-netifaces 0.10.4-0.1build4 portable network interface information - Python 3.x
+python3-pkg-resources 39.0.1-2 Package Discovery and Resource Access using pkg_resources
+python3-requests 2.18.4-2ubuntu0.1 elegant and simple HTTP library for Python3, built for human beings
+python3-six 1.11.0-2 Python 2 and 3 compatibility library (Python 3 interface)
+python3-software-properties 0.96.24.32.9 manage the repositories that you install software from
+python3-update-manager 1:18.04.11.10 python 3.x module for update-manager
+python3-urllib3 1.22-1ubuntu0.18.04.1 HTTP library with thread-safe connection pooling for Python3
+python3-yaml 3.12-1build2 YAML parser and emitter for Python3
+python3.6 3.6.8-1~18.04.1 Interactive high-level object-oriented language (version 3.6)
+python3.6-minimal 3.6.8-1~18.04.1 Minimal subset of the Python language (version 3.6)
+root 29 09:28 0:00 [devfreq_wq]
+root 166 09:28 0:00 [mpt_poll_0]
+root 9 09:28 0:00 [rcu_bh]
+root 16 09:28 0:00 [kauditd]
+
+[*] ENUMERATING INSTALLED LANGUAGES/TOOLS FOR SPLOIT BUILDING...
+
+[+] Installed Tools
+/usr/bin/awk
+/usr/bin/perl
+/usr/bin/python
+/usr/bin/gcc
+/usr/bin/cc
+/usr/bin/vi
+/usr/bin/find
+/bin/netcat
+/bin/nc
+/usr/bin/wget
+/usr/bin/ftp
+
+[+] Related Shell Escape Sequences...
+
+vi--> :!bash
+vi--> :set shell=/bin/bash:shell
+awk--> awk 'BEGIN {system("/bin/bash")}'
+find--> find / -exec /usr/bin/awk 'BEGIN {system("/bin/bash")}' \;
+perl--> perl -e 'exec "/bin/bash";'
+
+[*] FINDING RELEVENT PRIVILEGE ESCALATION EXPLOITS...
+
+Note: Exploits relying on a compile/scripting language not detected on this system are marked with a '**' but should still be tested!
+
+The following exploits are ranked higher in probability of success because this script detected a related running process, OS, or mounted file system
+- MySQL 4.x/5.0 User-Defined Function Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/1518 || Language=c
+
+The following exploits are applicable to this kernel version and should be investigated as well
+- Kernel ia32syscall Emulation Privilege Escalation || http://www.exploit-db.com/exploits/15023 || Language=c
+- Sendpage Local Privilege Escalation || http://www.exploit-db.com/exploits/19933 || Language=ruby**
+- CAP_SYS_ADMIN to Root Exploit 2 (32 and 64-bit) || http://www.exploit-db.com/exploits/15944 || Language=c
+- CAP_SYS_ADMIN to root Exploit || http://www.exploit-db.com/exploits/15916 || Language=c
+- MySQL 4.x/5.0 User-Defined Function Local Privilege Escalation Exploit || http://www.exploit-db.com/exploits/1518 || Language=c
+- open-time Capability file_ns_capable() Privilege Escalation || http://www.exploit-db.com/exploits/25450 || Language=c
+- open-time Capability file_ns_capable() - Privilege Escalation Vulnerability || http://www.exploit-db.com/exploits/25307 || Language=c
+
+Finished
+=================================================================================================
+Status	OK
